@@ -24,6 +24,39 @@ const Posts = () => {
         hash={'QmW8JiY9Y7VTErtP9JtjJhk2mT9VFhLfD8Jt6VYXnhW8Y'}
         id={'0'}
       />
+      <Post
+        // key={index}
+        // totalTips={image.tipAmount}
+        // address={image.author}
+        // description={image.description}
+        // hash={image.hash}
+        // id={image.id}
+        address={'0xbc4cf0a3a38328bf1c3b65befa8c5665d620a0f4'}
+        title={'Title of my new post'}
+        description={
+          'This is a test image This is a test image This is a test image This is a test image'
+        }
+        totalTips={'0'}
+        hash={'QmW8JiY9Y7VTErtP9JtjJhk2mT9VFhLfD8Jt6VYXnhW8Y'}
+        id={'0'}
+      />
+      <Post
+        // key={index}
+        // totalTips={image.tipAmount}
+        // address={image.author}
+        // description={image.description}
+        // hash={image.hash}
+        // id={image.id}
+        address={'0xbc4cf0a3a38328bf1c3b65befa8c5665d620a0f4'}
+        title={'Title of my new post'}
+        description={
+          'This is a test image This is a test image This is a test image This is a test image'
+        }
+        totalTips={'0'}
+        hash={'QmW8JiY9Y7VTErtP9JtjJhk2mT9VFhLfD8Jt6VYXnhW8Y'}
+        id={'0'}
+      />
+
       {/* ))} */}
     </div>
   );
@@ -34,10 +67,10 @@ const Post = ({ address, title, description, totalTips, hash, id }) => {
   var data = new Identicon(address, 200).toString();
   return (
     <div className="rounded-2xl overflow-hidden shadow-lg bg-white mb-10">
-      <div className="w-full">
+      <div className="w-full h-80">
         <img
           src="http://source.unsplash.com/ugo3jZ_qtKo/604x253"
-          className="w-full"
+          className="w-full h-full"
         />
       </div>
       <div className="px-3">

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import withAuth from '../components/withAuth';
 
 import Header from '../components/Layout/Header';
+import Details from '../components/Account/Details';
 const Posts = dynamic(() => import('../components/Posts'), {
   ssr: false,
 });
@@ -19,6 +20,7 @@ function Home() {
       </Head>
       <Header />
       <div className="container py-4 flex">
+        <Details address={'0xbc12kj1k2kj12jk12j1k'} openModal={() => {}} />
         <Posts />
       </div>
     </div>

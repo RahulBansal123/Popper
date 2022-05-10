@@ -1,14 +1,15 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
 contract PostContract{
 
     struct PostMultihash {	
-        bytes32 digest;	
+        string digest;	
         uint8 hashFn;	
         uint8 size;	
         address owner;
     }
-    uint postId = 1;
+    uint public postId = 1;
 
     // Mapping of userId to array of post ids
     mapping(uint => uint[]) private postOwnerIds;
@@ -27,7 +28,7 @@ contract PostContract{
 
     // View the post metadata for a specific postId
     function getPost(uint _postId) view public returns (  
-        bytes32 multihashDigest,
+        string memory multihashDigest,
         uint8 multihashHashFn,
         uint8 multihashSize,
         address owner){
@@ -41,14 +42,14 @@ contract PostContract{
     }
 
     // Create a post
-    function addPost(uint _postOwnerId, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (uint _postId){
-        postOwnerIds[_postOwnerId].push(postId);
+    function addPost(uint _postOwnerId, string calldata _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (uint _postId){
         postMetadataMultihashes[postId] = PostMultihash({
             digest: _multihashDigest,
             hashFn: _multihashHashFn,
             size: _multihashSize,
             owner: msg.sender
         });
+        postOwnerIds[_postOwnerId].push(postId);
         _postId = postId;
         postId += 1;
         require(postId != _postId, "expected incremented postId");
@@ -59,8 +60,12 @@ contract PostContract{
 
     // Cheer a creator on a post
     function cheerCreator(uint _postId) public payable{
-        require(_postId > 0 && _postId <= postId, "invalid postId");
+        require(_postId > 0 && _postId < postId, "invalid postId");
+        
         address _owner = postMetadataMultihashes[_postId].owner;
+        require(_owner != address(0x0), "post does not exist");
+        require(_owner != msg.sender, "cannot cheer yourself");
+
         payable(_owner).transfer(msg.value);
         postCheeredAmount[_postId] += msg.value;
     }

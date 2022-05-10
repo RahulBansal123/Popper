@@ -11,6 +11,7 @@ const Web3ReactProviderDefault = dynamic(
   { ssr: false }
 );
 
+import { DataProvider } from '../contexts/DataContext';
 import getLibrary from '../utils/getLibrary';
 
 function MyApp({ Component, pageProps }) {
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }) {
     <>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ReactProviderDefault getLibrary={getLibrary}>
-          <Component {...pageProps} />
+          <DataProvider>
+            <Component {...pageProps} />
+          </DataProvider>
         </Web3ReactProviderDefault>
       </Web3ReactProvider>
       <ToastContainer

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
 contract User{
@@ -5,6 +6,8 @@ contract User{
         string name;
         address wallet;
     }
+
+    uint public userId = 1;
 
     // Mapping of user's wallet to their id
     mapping(address => uint256) private usersWallet;
@@ -24,22 +27,45 @@ contract User{
         address wallet
     );
 
-    function createUser(uint256 _id, string memory _name, address _wallet) public{
-        require(_wallet != address(0x0) && _id > 0 && bytes(_name).length > 0);
+    modifier userExists(address wallet){
+        require(usersWallet[wallet] == 0, 'User already exists');
+        _;
+    }
+
+    modifier userCondition(address _wallet, string memory _name){
+        require(_wallet != address(0x0) && bytes(_name).length > 0);
+        _;
+    }
+
+    function createUser(string memory _name, address _wallet) public userExists(_wallet) userCondition(_wallet, _name) returns (uint256 _userId){
+
+        users[userId] = UserDetails(_name ,_wallet);
+        usersWallet[_wallet] = userId;
+
+        _userId = userId;
+        userId += 1;
+        require(userId != _userId, "expected incremented userId");
+
+        emit UserCreated(_userId, _name, _wallet);
+        return _userId;
+    }
+
+    function updateUser(string memory _name, address _wallet) userExists(_wallet) userCondition(_wallet, _name) public{
+        uint256 _id = usersWallet[msg.sender];
+
+        delete usersWallet[msg.sender];
+        delete users[_id];
+
         users[_id] = UserDetails(_name,_wallet);
         usersWallet[_wallet] = _id;
 
-        emit UserCreated(_id, _name, _wallet);
+        emit UserUpdated(_id, _name, _wallet);
     }
 
-    function updateUser(string memory _name, address _wallet) public{
-        uint256 _id = usersWallet[_wallet];
-        require(msg.sender == users[_id].wallet, "You are not authorized");
-        require(_id != 0, "User does not exist");
-        require(_wallet != address(0x0) && bytes(_name).length > 0);
-        users[_id] = UserDetails(_name,_wallet);
-
-        emit UserUpdated(_id, _name, _wallet);
+    function getUser(address _wallet) public view returns (uint256 _id, string memory _name){
+        _id = usersWallet[_wallet];
+        _name = users[_id].name;
+        return (_id, _name);
     }
 }
 
