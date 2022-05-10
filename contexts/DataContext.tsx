@@ -11,11 +11,34 @@ interface DataContextProps {
   loading: boolean;
   posts: any[];
   postCount: number;
-  addPost: () => Promise<void>;
+  addPost: (
+    ownerId: number,
+    digest: string,
+    hash: number,
+    size: number
+  ) => Promise<void>;
   updatePosts: () => Promise<void>;
-  cheerOwner: (id: string, tipAmout: any) => Promise<void>;
-  addUser: (id: string, tipAmout: any) => Promise<void>;
-  updateUser: (id: string, tipAmout: any) => Promise<void>;
+  getPost: (id: number) => Promise<void>;
+  cheerOwner: (id: string, amount: string) => Promise<void>;
+  addUser: (name: string, wallet: string) => Promise<void>;
+  updateUser: (name: string, wallet: string) => Promise<void>;
+  getUser: (wallet: string) => Promise<void>;
+  addLevel: (
+    ownerId: number,
+    level: string,
+    digest: string,
+    hash: number,
+    size: number
+  ) => Promise<void>;
+  updateLevel: (
+    ownerId: number,
+    level: string,
+    digest: string,
+    hash: number,
+    size: number
+  ) => Promise<void>;
+  getLevel: (ownerId: number, level: string) => Promise<void>;
+  subsribe: (ownerId: number, userId: number, level: string) => Promise<void>;
 }
 
 const DataContext = createContext<DataContextProps | null>(null);
@@ -118,11 +141,12 @@ export const useProviderData = () => {
     setLoading(false);
   };
 
+  // PostContract
   const addPost = async (
-    ownerId: string,
-    digest: any,
-    hash: any,
-    size: any
+    ownerId: number,
+    digest: string,
+    hash: number,
+    size: number
   ) => {
     setLoading(true);
     let postId = -1;
@@ -143,7 +167,7 @@ export const useProviderData = () => {
     setLoading(true);
     if (contract.post !== undefined) {
       try {
-        const count = await contract.post.methods.postId().call();
+        const count = await contract.post.methods.postId().call().call();
         setPostCount(count);
 
         const postList = [];
@@ -161,6 +185,31 @@ export const useProviderData = () => {
     }
   };
 
+  const getPost = async (id: number) => {
+    setLoading(true);
+    try {
+      const post = await contract.post.methods.getPost(id).call();
+      setLoading(false);
+      return post;
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const cheerOwner = async (id: string, amount: string) => {
+    setLoading(true);
+    try {
+      let res = await contract.post.methods
+        .cheerCreator(id)
+        .send({ from: account, value: amount });
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  // UserContract
   const addUser = async (name: string, wallet: string) => {
     let userId = -1;
     setLoading(true);
@@ -184,16 +233,92 @@ export const useProviderData = () => {
     setLoading(false);
   };
 
-  const cheerOwner = async (id: string, amount: string) => {
+  const getUser = async (wallet: string) => {
+    let userId = -1;
     setLoading(true);
+
     try {
-      let res = await contract.post.methods
-        .cheerCreator(id)
-        .send({ from: account, value: amount });
+      userId = await contract.user.methods.getUser(wallet);
     } catch (error) {
       console.error(error);
     }
     setLoading(false);
+    return userId;
+  };
+
+  // SocialContract
+  const addLevel = async (
+    ownerId: number,
+    level: string,
+    digest: string,
+    hash: number,
+    size: number
+  ) => {
+    let status = false;
+    setLoading(true);
+
+    try {
+      status = await contract.social.methods.addLevel(
+        ownerId,
+        level,
+        digest,
+        hash,
+        size
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+    return status;
+  };
+
+  const updateLevel = async (
+    ownerId: number,
+    level: string,
+    digest: string,
+    hash: number,
+    size: number
+  ) => {
+    let status = false;
+    setLoading(true);
+
+    try {
+      status = await contract.social.methods.updateLevel(
+        ownerId,
+        level,
+        digest,
+        hash,
+        size
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+    return status;
+  };
+
+  const getLevel = async (ownerId: number, level: string) => {
+    let _level: any;
+    setLoading(true);
+    try {
+      _level = await contract.social.methods.getLevel(ownerId, level);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+    return _level;
+  };
+
+  const subscribe = async (ownerId: number, userId: number, level: string) => {
+    let status = false;
+    setLoading(true);
+    try {
+      status = await contract.social.methods.subscribe(ownerId, userId, level);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+    return status;
   };
 
   return {
@@ -204,8 +329,14 @@ export const useProviderData = () => {
     postCount,
     addPost,
     updatePosts,
+    getPost,
     cheerOwner,
     addUser,
     updateUser,
+    getUser,
+    addLevel,
+    updateLevel,
+    getLevel,
+    subscribe,
   };
 };
