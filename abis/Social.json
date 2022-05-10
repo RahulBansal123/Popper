@@ -1,0 +1,2701 @@
+{
+  "contractName": "Social",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "ownerId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "level",
+          "type": "string"
+        }
+      ],
+      "name": "LevelCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ownerId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_level",
+          "type": "string"
+        }
+      ],
+      "name": "getLevel",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "digest",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "hashFn",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "size",
+          "type": "uint8"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ownerId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_level",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_multihashDigest",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_multihashHashFn",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_multihashSize",
+          "type": "uint8"
+        }
+      ],
+      "name": "addLevel",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.0+commit.26b70077\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"ownerId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"level\",\"type\":\"string\"}],\"name\":\"LevelCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_ownerId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_level\",\"type\":\"string\"},{\"internalType\":\"bytes32\",\"name\":\"_multihashDigest\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"_multihashHashFn\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"_multihashSize\",\"type\":\"uint8\"}],\"name\":\"addLevel\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"status\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_ownerId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_level\",\"type\":\"string\"}],\"name\":\"getLevel\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"digest\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"hashFn\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"size\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Social.sol\":\"Social\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Social.sol\":{\"keccak256\":\"0x7669b6d434675e39e2ab8bc3c28e30d637b73d80eb2968f25c1e377e1ca1a76c\",\"urls\":[\"bzz-raw://2212755644bc9550932707775e63775e3d87d80c01b78334f89b2683626ca3c5\",\"dweb:/ipfs/QmYNCJgUL9ScjaDHaWfxRQxoU29XcUao2S3VpKTGuvnEXt\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610576806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80635eadbadc1461003b578063b59bc69d14610161575b600080fd5b6100fe6004803603604081101561005157600080fd5b81019080803590602001909291908035906020019064010000000081111561007857600080fd5b82018360208201111561008a57600080fd5b803590602001918460018302840111640100000000831117156100ac57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610220565b604051808581526020018460ff1660ff1681526020018360ff1660ff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200194505050505060405180910390f35b610206600480360360a081101561017757600080fd5b81019080803590602001909291908035906020019064010000000081111561019e57600080fd5b8201836020820111156101b057600080fd5b803590602001918460018302840111640100000000831117156101d257600080fd5b909192939192939080359060200190929190803560ff169060200190929190803560ff169060200190929190505050610374565b604051808215151515815260200191505060405180910390f35b60008060008061022e6104f9565b600080888152602001908152602001600020866040518082805190602001908083835b602083106102745780518252602082019150602081019050602083039250610251565b6001836020036101000a0380198251168184511680821785525050505050509050019150509081526020016040518091039020604051806080016040529081600082015481526020016001820160009054906101000a900460ff1660ff1660ff1681526020016001820160019054906101000a900460ff1660ff1660ff1681526020016001820160029054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815250509050806000015181602001518260400151836060015194509450945094505092959194509250565b600060405180608001604052808581526020018460ff1681526020018360ff1681526020013373ffffffffffffffffffffffffffffffffffffffff16815250600080898152602001908152602001600020878760405180838380828437808301925050509250505090815260200160405180910390206000820151816000015560208201518160010160006101000a81548160ff021916908360ff16021790555060408201518160010160016101000a81548160ff021916908360ff16021790555060608201518160010160026101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055509050507fe943e58ed27df7b246e1adf7477db8339daf4e1390bb6631d30c12ca8688d0af87878760405180848152602001806020018281038252848482818152602001925080828437600081840152601f19601f82011690508083019250505094505050505060405180910390a1600190509695505050505050565b604051806080016040528060008019168152602001600060ff168152602001600060ff168152602001600073ffffffffffffffffffffffffffffffffffffffff168152509056fea2646970667358221220aab63ae6b939e0c26154013eeb3a75d3bbf7ceeb0514af0ad66f00d9395a4e3f64736f6c63430006000033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80635eadbadc1461003b578063b59bc69d14610161575b600080fd5b6100fe6004803603604081101561005157600080fd5b81019080803590602001909291908035906020019064010000000081111561007857600080fd5b82018360208201111561008a57600080fd5b803590602001918460018302840111640100000000831117156100ac57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610220565b604051808581526020018460ff1660ff1681526020018360ff1660ff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200194505050505060405180910390f35b610206600480360360a081101561017757600080fd5b81019080803590602001909291908035906020019064010000000081111561019e57600080fd5b8201836020820111156101b057600080fd5b803590602001918460018302840111640100000000831117156101d257600080fd5b909192939192939080359060200190929190803560ff169060200190929190803560ff169060200190929190505050610374565b604051808215151515815260200191505060405180910390f35b60008060008061022e6104f9565b600080888152602001908152602001600020866040518082805190602001908083835b602083106102745780518252602082019150602081019050602083039250610251565b6001836020036101000a0380198251168184511680821785525050505050509050019150509081526020016040518091039020604051806080016040529081600082015481526020016001820160009054906101000a900460ff1660ff1660ff1681526020016001820160019054906101000a900460ff1660ff1660ff1681526020016001820160029054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815250509050806000015181602001518260400151836060015194509450945094505092959194509250565b600060405180608001604052808581526020018460ff1681526020018360ff1681526020013373ffffffffffffffffffffffffffffffffffffffff16815250600080898152602001908152602001600020878760405180838380828437808301925050509250505090815260200160405180910390206000820151816000015560208201518160010160006101000a81548160ff021916908360ff16021790555060408201518160010160016101000a81548160ff021916908360ff16021790555060608201518160010160026101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055509050507fe943e58ed27df7b246e1adf7477db8339daf4e1390bb6631d30c12ca8688d0af87878760405180848152602001806020018281038252848482818152602001925080828437600081840152601f19601f82011690508083019250505094505050505060405180910390a1600190509695505050505050565b604051806080016040528060008019168152602001600060ff168152602001600060ff168152602001600073ffffffffffffffffffffffffffffffffffffffff168152509056fea2646970667358221220aab63ae6b939e0c26154013eeb3a75d3bbf7ceeb0514af0ad66f00d9395a4e3f64736f6c63430006000033",
+  "sourceMap": "25:1385:1:-:0;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:1385:1;;;;;;;",
+  "deployedSourceMap": "25:1385:1:-:0;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:1385:1;;;;;;;;;;;;;;;;;;;;;;;;446:424;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;446:424:1;;;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;446:424:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;446:424:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;446:424:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;446:424:1;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;898:443;;;;;;13:3:-1;8;5:12;2:2;;;30:1;27;20:12;2:2;898:443:1;;;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;898:443:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;898:443:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;898:443:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;446:424;533:14;557:12;579:10;599:13;629:36;;:::i;:::-;668:13;:23;682:8;668:23;;;;;;;;;;;692:6;668:31;;;;;;;;;;;;;36:153:-1;66:2;61:3;58:11;36:153;;182:3;176:10;171:3;164:23;98:2;93:3;89:12;82:19;;123:2;118:3;114:12;107:19;;148:2;143:3;139:12;132:19;;36:153;;;274:1;267:3;263:2;259:12;254:3;250:22;246:30;315:4;311:9;305:3;299:10;295:26;356:4;350:3;344:10;340:21;389:7;380;377:20;372:3;365:33;3:399;;;668:31:1;;;;;;;;;;;;;;;;;;;;;629:70;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;730:14;:21;;;765:14;:21;;;800:14;:19;;;833:14;:20;;;709:154;;;;;;;;;446:424;;;;;;;:::o;898:443::-;1045:11;1101:167;;;;;;;;1138:16;1101:167;;;;1176:16;1101:167;;;;;;1212:14;1101:167;;;;;;1247:10;1101:167;;;;;1067:13;:23;1081:8;1067:23;;;;;;;;;;;1091:6;;1067:31;;;;;30:3:-1;22:6;14;1:33;57:3;49:6;45:16;35:26;;1067:31:1;;;;;;;;;;;;;;;;;;:201;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1283:30;1296:8;1306:6;;1283:30;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;1283:30:1;;;;;;;;;;;;;;;1330:4;1323:11;;898:443;;;;;;;;:::o;25:1385::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.6.0;\n\ncontract Social {\n\n    struct LevelMultihash {\t\n        bytes32 digest;\t\n        uint8 hashFn;\t\n        uint8 size;\t\n        address owner;\n    }\n\n    // Mapping of users to their levels\n    // Levels can be: 'basic', 'gold', 'platinum'\n    mapping(uint => mapping(string=> LevelMultihash)) private levelOwnerIds;\n\n    // Events\n    event LevelCreated(uint ownerId, string level);\n\n    // Get level details of a user\n    function getLevel(uint _ownerId, string memory _level) public view returns (  \n        bytes32 digest,\n        uint8 hashFn,\n        uint8 size,\n        address owner\n    ) {\n        LevelMultihash memory _levelMultihas = levelOwnerIds[_ownerId][_level];\n        return (\n            _levelMultihas.digest,\n            _levelMultihas.hashFn,\n            _levelMultihas.size,\n            _levelMultihas.owner\n        );\n    }\n\n    // Create a level\n    function addLevel(uint _ownerId, string calldata _level, bytes32 _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (bool status){\n        levelOwnerIds[_ownerId][_level] = LevelMultihash({\n            digest: _multihashDigest,\n            hashFn: _multihashHashFn,\n            size: _multihashSize,\n            owner: msg.sender\n        });\n        emit LevelCreated(_ownerId, _level);\n        return true;\n    }\n    \n    // function subscribe(){}\n    // function unsubscribe(){}\n}",
+  "sourcePath": "/Users/rahulbansal/Desktop/Peer-to-Peer-Donation-dApp/contracts/Social.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Social.sol",
+    "exportedSymbols": {
+      "Social": [
+        259
+      ]
+    },
+    "id": 260,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 166,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 259,
+        "linearizedBaseContracts": [
+          259
+        ],
+        "name": "Social",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Social.LevelMultihash",
+            "id": 175,
+            "members": [
+              {
+                "constant": false,
+                "id": 168,
+                "name": "digest",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 175,
+                "src": "81:14:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 167,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "81:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 170,
+                "name": "hashFn",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 175,
+                "src": "106:12:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint8",
+                  "typeString": "uint8"
+                },
+                "typeName": {
+                  "id": 169,
+                  "name": "uint8",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "106:5:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 172,
+                "name": "size",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 175,
+                "src": "129:10:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint8",
+                  "typeString": "uint8"
+                },
+                "typeName": {
+                  "id": 171,
+                  "name": "uint8",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "129:5:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 174,
+                "name": "owner",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 175,
+                "src": "150:13:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 173,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "150:7:1",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "LevelMultihash",
+            "nodeType": "StructDefinition",
+            "scope": 259,
+            "src": "48:122:1",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 181,
+            "name": "levelOwnerIds",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 259,
+            "src": "266:71:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$_$",
+              "typeString": "mapping(uint256 => mapping(string => struct Social.LevelMultihash))"
+            },
+            "typeName": {
+              "id": 180,
+              "keyType": {
+                "id": 176,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "274:4:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "266:49:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$_$",
+                "typeString": "mapping(uint256 => mapping(string => struct Social.LevelMultihash))"
+              },
+              "valueType": {
+                "id": 179,
+                "keyType": {
+                  "id": 177,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "290:6:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "282:32:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$",
+                  "typeString": "mapping(string => struct Social.LevelMultihash)"
+                },
+                "valueType": {
+                  "contractScope": null,
+                  "id": 178,
+                  "name": "LevelMultihash",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 175,
+                  "src": "299:14:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_LevelMultihash_$175_storage_ptr",
+                    "typeString": "struct Social.LevelMultihash"
+                  }
+                }
+              }
+            },
+            "value": null,
+            "visibility": "private"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 187,
+            "name": "LevelCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 186,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 183,
+                  "indexed": false,
+                  "name": "ownerId",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 187,
+                  "src": "377:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 182,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "377:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 185,
+                  "indexed": false,
+                  "name": "level",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 187,
+                  "src": "391:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 184,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "391:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "376:28:1"
+            },
+            "src": "358:47:1"
+          },
+          {
+            "body": {
+              "id": 220,
+              "nodeType": "Block",
+              "src": "619:251:1",
+              "statements": [
+                {
+                  "assignments": [
+                    203
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 203,
+                      "name": "_levelMultihas",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 220,
+                      "src": "629:36:1",
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LevelMultihash_$175_memory_ptr",
+                        "typeString": "struct Social.LevelMultihash"
+                      },
+                      "typeName": {
+                        "contractScope": null,
+                        "id": 202,
+                        "name": "LevelMultihash",
+                        "nodeType": "UserDefinedTypeName",
+                        "referencedDeclaration": 175,
+                        "src": "629:14:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_LevelMultihash_$175_storage_ptr",
+                          "typeString": "struct Social.LevelMultihash"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 209,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "baseExpression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 204,
+                        "name": "levelOwnerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 181,
+                        "src": "668:13:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$_$",
+                          "typeString": "mapping(uint256 => mapping(string memory => struct Social.LevelMultihash storage ref))"
+                        }
+                      },
+                      "id": 206,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 205,
+                        "name": "_ownerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 189,
+                        "src": "682:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "668:23:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$",
+                        "typeString": "mapping(string memory => struct Social.LevelMultihash storage ref)"
+                      }
+                    },
+                    "id": 208,
+                    "indexExpression": {
+                      "argumentTypes": null,
+                      "id": 207,
+                      "name": "_level",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 191,
+                      "src": "692:6:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "668:31:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LevelMultihash_$175_storage",
+                      "typeString": "struct Social.LevelMultihash storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "629:70:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 210,
+                          "name": "_levelMultihas",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 203,
+                          "src": "730:14:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_LevelMultihash_$175_memory_ptr",
+                            "typeString": "struct Social.LevelMultihash memory"
+                          }
+                        },
+                        "id": 211,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "digest",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 168,
+                        "src": "730:21:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 212,
+                          "name": "_levelMultihas",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 203,
+                          "src": "765:14:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_LevelMultihash_$175_memory_ptr",
+                            "typeString": "struct Social.LevelMultihash memory"
+                          }
+                        },
+                        "id": 213,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "hashFn",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 170,
+                        "src": "765:21:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint8",
+                          "typeString": "uint8"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 214,
+                          "name": "_levelMultihas",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 203,
+                          "src": "800:14:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_LevelMultihash_$175_memory_ptr",
+                            "typeString": "struct Social.LevelMultihash memory"
+                          }
+                        },
+                        "id": 215,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "size",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 172,
+                        "src": "800:19:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint8",
+                          "typeString": "uint8"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 216,
+                          "name": "_levelMultihas",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 203,
+                          "src": "833:14:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_LevelMultihash_$175_memory_ptr",
+                            "typeString": "struct Social.LevelMultihash memory"
+                          }
+                        },
+                        "id": 217,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "owner",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 174,
+                        "src": "833:20:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "id": 218,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "716:147:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_bytes32_$_t_uint8_$_t_uint8_$_t_address_$",
+                      "typeString": "tuple(bytes32,uint8,uint8,address)"
+                    }
+                  },
+                  "functionReturnParameters": 201,
+                  "id": 219,
+                  "nodeType": "Return",
+                  "src": "709:154:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "5eadbadc",
+            "id": 221,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLevel",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 192,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 189,
+                  "name": "_ownerId",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "464:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 188,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "464:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 191,
+                  "name": "_level",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "479:20:1",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 190,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "479:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "463:37:1"
+            },
+            "returnParameters": {
+              "id": 201,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 194,
+                  "name": "digest",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "533:14:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 193,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "533:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 196,
+                  "name": "hashFn",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "557:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 195,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "557:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 198,
+                  "name": "size",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "579:10:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 197,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "579:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 200,
+                  "name": "owner",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 221,
+                  "src": "599:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 199,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "599:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "521:97:1"
+            },
+            "scope": 259,
+            "src": "446:424:1",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 257,
+              "nodeType": "Block",
+              "src": "1057:284:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 248,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "baseExpression": {
+                          "argumentTypes": null,
+                          "id": 236,
+                          "name": "levelOwnerIds",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 181,
+                          "src": "1067:13:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$_$",
+                            "typeString": "mapping(uint256 => mapping(string memory => struct Social.LevelMultihash storage ref))"
+                          }
+                        },
+                        "id": 239,
+                        "indexExpression": {
+                          "argumentTypes": null,
+                          "id": 237,
+                          "name": "_ownerId",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 223,
+                          "src": "1081:8:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1067:23:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_string_memory_$_t_struct$_LevelMultihash_$175_storage_$",
+                          "typeString": "mapping(string memory => struct Social.LevelMultihash storage ref)"
+                        }
+                      },
+                      "id": 240,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 238,
+                        "name": "_level",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 225,
+                        "src": "1091:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_calldata_ptr",
+                          "typeString": "string calldata"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1067:31:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LevelMultihash_$175_storage",
+                        "typeString": "struct Social.LevelMultihash storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 242,
+                          "name": "_multihashDigest",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 227,
+                          "src": "1138:16:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 243,
+                          "name": "_multihashHashFn",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 229,
+                          "src": "1176:16:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 244,
+                          "name": "_multihashSize",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 231,
+                          "src": "1212:14:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 245,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 422,
+                            "src": "1247:3:1",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 246,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1247:10:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          },
+                          {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          },
+                          {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          },
+                          {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        ],
+                        "id": 241,
+                        "name": "LevelMultihash",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 175,
+                        "src": "1101:14:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_struct$_LevelMultihash_$175_storage_ptr_$",
+                          "typeString": "type(struct Social.LevelMultihash storage pointer)"
+                        }
+                      },
+                      "id": 247,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "structConstructorCall",
+                      "lValueRequested": false,
+                      "names": [
+                        "digest",
+                        "hashFn",
+                        "size",
+                        "owner"
+                      ],
+                      "nodeType": "FunctionCall",
+                      "src": "1101:167:1",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LevelMultihash_$175_memory",
+                        "typeString": "struct Social.LevelMultihash memory"
+                      }
+                    },
+                    "src": "1067:201:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_LevelMultihash_$175_storage",
+                      "typeString": "struct Social.LevelMultihash storage ref"
+                    }
+                  },
+                  "id": 249,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1067:201:1"
+                },
+                {
+                  "eventCall": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 251,
+                        "name": "_ownerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 223,
+                        "src": "1296:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 252,
+                        "name": "_level",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 225,
+                        "src": "1306:6:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_calldata_ptr",
+                          "typeString": "string calldata"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_string_calldata_ptr",
+                          "typeString": "string calldata"
+                        }
+                      ],
+                      "id": 250,
+                      "name": "LevelCreated",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 187,
+                      "src": "1283:12:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (uint256,string memory)"
+                      }
+                    },
+                    "id": 253,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1283:30:1",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 254,
+                  "nodeType": "EmitStatement",
+                  "src": "1278:35:1"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "hexValue": "74727565",
+                    "id": 255,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "bool",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "1330:4:1",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "value": "true"
+                  },
+                  "functionReturnParameters": 235,
+                  "id": 256,
+                  "nodeType": "Return",
+                  "src": "1323:11:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "b59bc69d",
+            "id": 258,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addLevel",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 232,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 223,
+                  "name": "_ownerId",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "916:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 222,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "916:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 225,
+                  "name": "_level",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "931:22:1",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 224,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "931:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 227,
+                  "name": "_multihashDigest",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "955:24:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 226,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "955:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 229,
+                  "name": "_multihashHashFn",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "981:22:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 228,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "981:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 231,
+                  "name": "_multihashSize",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "1005:20:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 230,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1005:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "915:111:1"
+            },
+            "returnParameters": {
+              "id": 235,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 234,
+                  "name": "status",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 258,
+                  "src": "1045:11:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 233,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1045:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1044:13:1"
+            },
+            "scope": 259,
+            "src": "898:443:1",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 260,
+        "src": "25:1385:1"
+      }
+    ],
+    "src": "0:1410:1"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/Social.sol",
+      "exportedSymbols": {
+        "Social": [
+          259
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.6",
+            ".0"
+          ]
+        },
+        "id": 166,
+        "name": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            259
+          ],
+          "name": "Social",
+          "scope": 260
+        },
+        "children": [
+          {
+            "attributes": {
+              "canonicalName": "Social.LevelMultihash",
+              "name": "LevelMultihash",
+              "scope": 259,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "digest",
+                  "overrides": null,
+                  "scope": 175,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 167,
+                    "name": "ElementaryTypeName",
+                    "src": "81:7:1"
+                  }
+                ],
+                "id": 168,
+                "name": "VariableDeclaration",
+                "src": "81:14:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "hashFn",
+                  "overrides": null,
+                  "scope": 175,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint8",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint8",
+                      "type": "uint8"
+                    },
+                    "id": 169,
+                    "name": "ElementaryTypeName",
+                    "src": "106:5:1"
+                  }
+                ],
+                "id": 170,
+                "name": "VariableDeclaration",
+                "src": "106:12:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "size",
+                  "overrides": null,
+                  "scope": 175,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint8",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint8",
+                      "type": "uint8"
+                    },
+                    "id": 171,
+                    "name": "ElementaryTypeName",
+                    "src": "129:5:1"
+                  }
+                ],
+                "id": 172,
+                "name": "VariableDeclaration",
+                "src": "129:10:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "owner",
+                  "overrides": null,
+                  "scope": 175,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 173,
+                    "name": "ElementaryTypeName",
+                    "src": "150:7:1"
+                  }
+                ],
+                "id": 174,
+                "name": "VariableDeclaration",
+                "src": "150:13:1"
+              }
+            ],
+            "id": 175,
+            "name": "StructDefinition",
+            "src": "48:122:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "levelOwnerIds",
+              "overrides": null,
+              "scope": 259,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(uint256 => mapping(string => struct Social.LevelMultihash))",
+              "value": null,
+              "visibility": "private"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(uint256 => mapping(string => struct Social.LevelMultihash))"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 176,
+                    "name": "ElementaryTypeName",
+                    "src": "274:4:1"
+                  },
+                  {
+                    "attributes": {
+                      "type": "mapping(string => struct Social.LevelMultihash)"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 177,
+                        "name": "ElementaryTypeName",
+                        "src": "290:6:1"
+                      },
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "LevelMultihash",
+                          "referencedDeclaration": 175,
+                          "type": "struct Social.LevelMultihash"
+                        },
+                        "id": 178,
+                        "name": "UserDefinedTypeName",
+                        "src": "299:14:1"
+                      }
+                    ],
+                    "id": 179,
+                    "name": "Mapping",
+                    "src": "282:32:1"
+                  }
+                ],
+                "id": 180,
+                "name": "Mapping",
+                "src": "266:49:1"
+              }
+            ],
+            "id": 181,
+            "name": "VariableDeclaration",
+            "src": "266:71:1"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "documentation": null,
+              "name": "LevelCreated"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "ownerId",
+                      "overrides": null,
+                      "scope": 187,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 182,
+                        "name": "ElementaryTypeName",
+                        "src": "377:4:1"
+                      }
+                    ],
+                    "id": 183,
+                    "name": "VariableDeclaration",
+                    "src": "377:12:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "level",
+                      "overrides": null,
+                      "scope": 187,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 184,
+                        "name": "ElementaryTypeName",
+                        "src": "391:6:1"
+                      }
+                    ],
+                    "id": 185,
+                    "name": "VariableDeclaration",
+                    "src": "391:12:1"
+                  }
+                ],
+                "id": 186,
+                "name": "ParameterList",
+                "src": "376:28:1"
+              }
+            ],
+            "id": 187,
+            "name": "EventDefinition",
+            "src": "358:47:1"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "functionSelector": "5eadbadc",
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getLevel",
+              "overrides": null,
+              "scope": 259,
+              "stateMutability": "view",
+              "virtual": false,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_ownerId",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 188,
+                        "name": "ElementaryTypeName",
+                        "src": "464:4:1"
+                      }
+                    ],
+                    "id": 189,
+                    "name": "VariableDeclaration",
+                    "src": "464:13:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_level",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 190,
+                        "name": "ElementaryTypeName",
+                        "src": "479:6:1"
+                      }
+                    ],
+                    "id": 191,
+                    "name": "VariableDeclaration",
+                    "src": "479:20:1"
+                  }
+                ],
+                "id": 192,
+                "name": "ParameterList",
+                "src": "463:37:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "digest",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 193,
+                        "name": "ElementaryTypeName",
+                        "src": "533:7:1"
+                      }
+                    ],
+                    "id": 194,
+                    "name": "VariableDeclaration",
+                    "src": "533:14:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "hashFn",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint8",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint8",
+                          "type": "uint8"
+                        },
+                        "id": 195,
+                        "name": "ElementaryTypeName",
+                        "src": "557:5:1"
+                      }
+                    ],
+                    "id": 196,
+                    "name": "VariableDeclaration",
+                    "src": "557:12:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "size",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint8",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint8",
+                          "type": "uint8"
+                        },
+                        "id": 197,
+                        "name": "ElementaryTypeName",
+                        "src": "579:5:1"
+                      }
+                    ],
+                    "id": 198,
+                    "name": "VariableDeclaration",
+                    "src": "579:10:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "owner",
+                      "overrides": null,
+                      "scope": 221,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 199,
+                        "name": "ElementaryTypeName",
+                        "src": "599:7:1"
+                      }
+                    ],
+                    "id": 200,
+                    "name": "VariableDeclaration",
+                    "src": "599:13:1"
+                  }
+                ],
+                "id": 201,
+                "name": "ParameterList",
+                "src": "521:97:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        203
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "_levelMultihas",
+                          "overrides": null,
+                          "scope": 220,
+                          "stateVariable": false,
+                          "storageLocation": "memory",
+                          "type": "struct Social.LevelMultihash",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "LevelMultihash",
+                              "referencedDeclaration": 175,
+                              "type": "struct Social.LevelMultihash"
+                            },
+                            "id": 202,
+                            "name": "UserDefinedTypeName",
+                            "src": "629:14:1"
+                          }
+                        ],
+                        "id": 203,
+                        "name": "VariableDeclaration",
+                        "src": "629:36:1"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "type": "struct Social.LevelMultihash storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "type": "mapping(string memory => struct Social.LevelMultihash storage ref)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 181,
+                                  "type": "mapping(uint256 => mapping(string memory => struct Social.LevelMultihash storage ref))",
+                                  "value": "levelOwnerIds"
+                                },
+                                "id": 204,
+                                "name": "Identifier",
+                                "src": "668:13:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 189,
+                                  "type": "uint256",
+                                  "value": "_ownerId"
+                                },
+                                "id": 205,
+                                "name": "Identifier",
+                                "src": "682:8:1"
+                              }
+                            ],
+                            "id": 206,
+                            "name": "IndexAccess",
+                            "src": "668:23:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 191,
+                              "type": "string memory",
+                              "value": "_level"
+                            },
+                            "id": 207,
+                            "name": "Identifier",
+                            "src": "692:6:1"
+                          }
+                        ],
+                        "id": 208,
+                        "name": "IndexAccess",
+                        "src": "668:31:1"
+                      }
+                    ],
+                    "id": 209,
+                    "name": "VariableDeclarationStatement",
+                    "src": "629:70:1"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 201
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "type": "tuple(bytes32,uint8,uint8,address)"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "digest",
+                              "referencedDeclaration": 168,
+                              "type": "bytes32"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 203,
+                                  "type": "struct Social.LevelMultihash memory",
+                                  "value": "_levelMultihas"
+                                },
+                                "id": 210,
+                                "name": "Identifier",
+                                "src": "730:14:1"
+                              }
+                            ],
+                            "id": 211,
+                            "name": "MemberAccess",
+                            "src": "730:21:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "hashFn",
+                              "referencedDeclaration": 170,
+                              "type": "uint8"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 203,
+                                  "type": "struct Social.LevelMultihash memory",
+                                  "value": "_levelMultihas"
+                                },
+                                "id": 212,
+                                "name": "Identifier",
+                                "src": "765:14:1"
+                              }
+                            ],
+                            "id": 213,
+                            "name": "MemberAccess",
+                            "src": "765:21:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "size",
+                              "referencedDeclaration": 172,
+                              "type": "uint8"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 203,
+                                  "type": "struct Social.LevelMultihash memory",
+                                  "value": "_levelMultihas"
+                                },
+                                "id": 214,
+                                "name": "Identifier",
+                                "src": "800:14:1"
+                              }
+                            ],
+                            "id": 215,
+                            "name": "MemberAccess",
+                            "src": "800:19:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "owner",
+                              "referencedDeclaration": 174,
+                              "type": "address"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 203,
+                                  "type": "struct Social.LevelMultihash memory",
+                                  "value": "_levelMultihas"
+                                },
+                                "id": 216,
+                                "name": "Identifier",
+                                "src": "833:14:1"
+                              }
+                            ],
+                            "id": 217,
+                            "name": "MemberAccess",
+                            "src": "833:20:1"
+                          }
+                        ],
+                        "id": 218,
+                        "name": "TupleExpression",
+                        "src": "716:147:1"
+                      }
+                    ],
+                    "id": 219,
+                    "name": "Return",
+                    "src": "709:154:1"
+                  }
+                ],
+                "id": 220,
+                "name": "Block",
+                "src": "619:251:1"
+              }
+            ],
+            "id": 221,
+            "name": "FunctionDefinition",
+            "src": "446:424:1"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "functionSelector": "b59bc69d",
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "addLevel",
+              "overrides": null,
+              "scope": 259,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_ownerId",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 222,
+                        "name": "ElementaryTypeName",
+                        "src": "916:4:1"
+                      }
+                    ],
+                    "id": 223,
+                    "name": "VariableDeclaration",
+                    "src": "916:13:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_level",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 224,
+                        "name": "ElementaryTypeName",
+                        "src": "931:6:1"
+                      }
+                    ],
+                    "id": 225,
+                    "name": "VariableDeclaration",
+                    "src": "931:22:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_multihashDigest",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 226,
+                        "name": "ElementaryTypeName",
+                        "src": "955:7:1"
+                      }
+                    ],
+                    "id": 227,
+                    "name": "VariableDeclaration",
+                    "src": "955:24:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_multihashHashFn",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint8",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint8",
+                          "type": "uint8"
+                        },
+                        "id": 228,
+                        "name": "ElementaryTypeName",
+                        "src": "981:5:1"
+                      }
+                    ],
+                    "id": 229,
+                    "name": "VariableDeclaration",
+                    "src": "981:22:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_multihashSize",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint8",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint8",
+                          "type": "uint8"
+                        },
+                        "id": 230,
+                        "name": "ElementaryTypeName",
+                        "src": "1005:5:1"
+                      }
+                    ],
+                    "id": 231,
+                    "name": "VariableDeclaration",
+                    "src": "1005:20:1"
+                  }
+                ],
+                "id": 232,
+                "name": "ParameterList",
+                "src": "915:111:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "status",
+                      "overrides": null,
+                      "scope": 258,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 233,
+                        "name": "ElementaryTypeName",
+                        "src": "1045:4:1"
+                      }
+                    ],
+                    "id": 234,
+                    "name": "VariableDeclaration",
+                    "src": "1045:11:1"
+                  }
+                ],
+                "id": 235,
+                "name": "ParameterList",
+                "src": "1044:13:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "struct Social.LevelMultihash storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "struct Social.LevelMultihash storage ref"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "type": "mapping(string memory => struct Social.LevelMultihash storage ref)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 181,
+                                      "type": "mapping(uint256 => mapping(string memory => struct Social.LevelMultihash storage ref))",
+                                      "value": "levelOwnerIds"
+                                    },
+                                    "id": 236,
+                                    "name": "Identifier",
+                                    "src": "1067:13:1"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 223,
+                                      "type": "uint256",
+                                      "value": "_ownerId"
+                                    },
+                                    "id": 237,
+                                    "name": "Identifier",
+                                    "src": "1081:8:1"
+                                  }
+                                ],
+                                "id": 239,
+                                "name": "IndexAccess",
+                                "src": "1067:23:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 225,
+                                  "type": "string calldata",
+                                  "value": "_level"
+                                },
+                                "id": 238,
+                                "name": "Identifier",
+                                "src": "1091:6:1"
+                              }
+                            ],
+                            "id": 240,
+                            "name": "IndexAccess",
+                            "src": "1067:31:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": true,
+                              "lValueRequested": false,
+                              "names": [
+                                "digest",
+                                "hashFn",
+                                "size",
+                                "owner"
+                              ],
+                              "tryCall": false,
+                              "type": "struct Social.LevelMultihash memory",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_bytes32",
+                                      "typeString": "bytes32"
+                                    },
+                                    {
+                                      "typeIdentifier": "t_uint8",
+                                      "typeString": "uint8"
+                                    },
+                                    {
+                                      "typeIdentifier": "t_uint8",
+                                      "typeString": "uint8"
+                                    },
+                                    {
+                                      "typeIdentifier": "t_address_payable",
+                                      "typeString": "address payable"
+                                    }
+                                  ],
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 175,
+                                  "type": "type(struct Social.LevelMultihash storage pointer)",
+                                  "value": "LevelMultihash"
+                                },
+                                "id": 241,
+                                "name": "Identifier",
+                                "src": "1101:14:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 227,
+                                  "type": "bytes32",
+                                  "value": "_multihashDigest"
+                                },
+                                "id": 242,
+                                "name": "Identifier",
+                                "src": "1138:16:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 229,
+                                  "type": "uint8",
+                                  "value": "_multihashHashFn"
+                                },
+                                "id": 243,
+                                "name": "Identifier",
+                                "src": "1176:16:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 231,
+                                  "type": "uint8",
+                                  "value": "_multihashSize"
+                                },
+                                "id": 244,
+                                "name": "Identifier",
+                                "src": "1212:14:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "sender",
+                                  "referencedDeclaration": null,
+                                  "type": "address payable"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 422,
+                                      "type": "msg",
+                                      "value": "msg"
+                                    },
+                                    "id": 245,
+                                    "name": "Identifier",
+                                    "src": "1247:3:1"
+                                  }
+                                ],
+                                "id": 246,
+                                "name": "MemberAccess",
+                                "src": "1247:10:1"
+                              }
+                            ],
+                            "id": 247,
+                            "name": "FunctionCall",
+                            "src": "1101:167:1"
+                          }
+                        ],
+                        "id": 248,
+                        "name": "Assignment",
+                        "src": "1067:201:1"
+                      }
+                    ],
+                    "id": 249,
+                    "name": "ExpressionStatement",
+                    "src": "1067:201:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "tryCall": false,
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                },
+                                {
+                                  "typeIdentifier": "t_string_calldata_ptr",
+                                  "typeString": "string calldata"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 187,
+                              "type": "function (uint256,string memory)",
+                              "value": "LevelCreated"
+                            },
+                            "id": 250,
+                            "name": "Identifier",
+                            "src": "1283:12:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 223,
+                              "type": "uint256",
+                              "value": "_ownerId"
+                            },
+                            "id": 251,
+                            "name": "Identifier",
+                            "src": "1296:8:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 225,
+                              "type": "string calldata",
+                              "value": "_level"
+                            },
+                            "id": 252,
+                            "name": "Identifier",
+                            "src": "1306:6:1"
+                          }
+                        ],
+                        "id": 253,
+                        "name": "FunctionCall",
+                        "src": "1283:30:1"
+                      }
+                    ],
+                    "id": 254,
+                    "name": "EmitStatement",
+                    "src": "1278:35:1"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 235
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "hexvalue": "74727565",
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "lValueRequested": false,
+                          "subdenomination": null,
+                          "token": "bool",
+                          "type": "bool",
+                          "value": "true"
+                        },
+                        "id": 255,
+                        "name": "Literal",
+                        "src": "1330:4:1"
+                      }
+                    ],
+                    "id": 256,
+                    "name": "Return",
+                    "src": "1323:11:1"
+                  }
+                ],
+                "id": 257,
+                "name": "Block",
+                "src": "1057:284:1"
+              }
+            ],
+            "id": 258,
+            "name": "FunctionDefinition",
+            "src": "898:443:1"
+          }
+        ],
+        "id": 259,
+        "name": "ContractDefinition",
+        "src": "25:1385:1"
+      }
+    ],
+    "id": 260,
+    "name": "SourceUnit",
+    "src": "0:1410:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.0+commit.26b70077.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x4A0924D53cD4d2718f37DB5365322afF4D087c62",
+      "transactionHash": "0x820b4036cca988663fc6763fed510a55d594a5379dc879d47412b75bef739272"
+    }
+  },
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-05-09T19:37:39.793Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
