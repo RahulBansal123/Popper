@@ -44,7 +44,7 @@ const Auth = () => {
                 src="/assets/images/logo.png"
                 alt="Popper"
                 width="60%"
-                className="mx-auto"
+                className="mx-auto hover:scale-125 transition-all duration-500"
               />
             </div>
             <div className="text-center my-5 text-base">
@@ -52,7 +52,7 @@ const Auth = () => {
             </div>
             <div className="flex">
               <button
-                className="btn bg-red-100 text-red-400 w-full"
+                className="btn bg-red-100 text-red-400 w-full hover:text-red-500"
                 onClick={handleClick}
               >
                 Connect to a wallet

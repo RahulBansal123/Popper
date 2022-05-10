@@ -16,7 +16,9 @@ function Header() {
     <div className="container items-center">
       <div className="flex flex-col md:flex-row items-center md:justify-between border py-3 px-5 rounded-xl">
         <div className="flex flex-row space-x-2 items-center">
-          <span className="font-mono text-xl font-bold">Popper</span>
+          <a href="/" className="font-mono text-xl font-bold text-blue-800">
+            Popper
+          </a>
         </div>
         <div
           className="flex flex-row space-x-2 items-center cursor-pointer"

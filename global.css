@@ -1,10 +1,14 @@
 body {
   background-color: #fff;
   font-weight: 400;
-  color: #5b5b5b;
+  color: rgb(36, 30, 18);
   line-height: 1.6;
 }
 
 .btn {
   @apply font-normal py-2 px-4 rounded-xl;
+}
+
+.bg-blue-800 {
+  background: rgb(0, 76, 129);
 }
