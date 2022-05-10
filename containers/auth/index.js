@@ -37,7 +37,7 @@ const Auth = () => {
   return (
     <div>
       <div className="flex flex-wrap md:justify-center w-full">
-        <div className="relative flex flex-col bg-white rounded-2xl border-0 shadow top-1/2 translate-y-1/2 w-1/3 text-center">
+        <div className="relative flex flex-col bg-white rounded-2xl border-0 shadow-md top-1/2 translate-y-1/2 w-1/3 text-center">
           <div className="flex-1 p-10">
             <div className="text-center">
               <img

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import Header from '../components/Layout/Header';
 import Details from '../components/Account/Details';
+import withAuth from '../components/withAuth';
 
 const Account = () => {
   const router = useRouter();
@@ -20,4 +21,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default withAuth(Account);
