@@ -1,13 +1,13 @@
 declare let window: any;
-import Identicon from "identicon.js";
-import React from "react";
-import { useData } from "../contexts/DataContext";
+import Identicon from 'identicon.js';
+import React from 'react';
+// import { useData } from "../contexts/DataContext";
 
 const Body = () => {
-  const { images } = useData();
+  // const { images } = useData();
   return (
     <>
-      {images.length > 0 &&
+      {/* {images.length > 0 &&
         images.map((image, index) => (
           <BodyItem
             key={index}
@@ -17,7 +17,7 @@ const Body = () => {
             hash={image.hash}
             id={image.id}
           />
-        ))}
+        ))} */}
     </>
   );
 };
@@ -40,11 +40,11 @@ const BodyItem = ({ address, description, totalTips, hash, id }) => {
       </div>
       <div className="bg-gray-100 rounded-b-xl py-3 px-4 border-b border-l border-r font-mono flex flex-row justify-between">
         <span>
-          Total TIPS: {window.web3.utils.fromWei(totalTips, "Ether")} MATIC
+          Total TIPS: {window.web3.utils.fromWei(totalTips, 'Ether')} MATIC
         </span>
         <div
           onClick={async () => {
-            let tipAmount = window.web3.utils.toWei("0.1", "Ether");
+            let tipAmount = window.web3.utils.toWei('0.1', 'Ether');
             await tipImageOwner(id, tipAmount);
             await updateImages();
           }}

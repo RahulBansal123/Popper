@@ -2,12 +2,13 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Body from '../components/Body';
 import Header from '../components/Layout/Header';
+import withAuth from '../components/withAuth';
 import { UploadImage } from '../components/UploadImage';
-import { useData } from '../contexts/DataContext';
 
-export default function Home() {
+function Home() {
   let [isOpen, setIsOpen] = useState(false);
-  const { loading } = useData();
+  // const { loading } = useData();
+  const loading = false;
 
   function closeModal() {
     setIsOpen(false);
@@ -38,3 +39,4 @@ export default function Home() {
     </div>
   );
 }
+export default withAuth(Home);

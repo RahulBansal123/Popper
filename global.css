@@ -1,0 +1,10 @@
+body {
+  background-color: #f3f4f775;
+  font-weight: 400;
+  color: #5b5b5b;
+  line-height: 1.6;
+}
+
+.btn {
+  @apply font-normal py-2 px-4 rounded-xl;
+}

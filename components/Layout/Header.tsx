@@ -1,11 +1,11 @@
 import Identicon from 'identicon.js';
 import { useRouter } from 'next//router';
 import React, { useEffect } from 'react';
-import { useData } from '../../contexts/DataContext';
 
 function Header() {
   const router = useRouter();
-  const { account } = useData();
+  // const { account } = useData();
+  const account = '';
   // const [data, setData] = React.useState();
   // useEffect(() => {
   //   if (account !== '0x0') {

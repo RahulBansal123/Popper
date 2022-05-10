@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { create } from 'ipfs-http-client';
 import { Fragment, useState } from 'react';
-import { useData } from '../contexts/DataContext';
 import { TextArea } from './TextArea';
 
 interface Props {
@@ -12,7 +11,10 @@ interface Props {
 export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
   const [buttonTxt, setButtonTxt] = useState<string>('Upload');
   const [file, setFile] = useState<File | null>(null);
-  const { contract, account, updateImages } = useData();
+  // const { contract, account, updateImages } = useData();
+  const contract = '';
+  const account = '';
+  const updateImages = () => {};
   const client = create({ url: 'https://ipfs.infura.io:5001/api/v0' });
   const [description, setDescription] = useState<string>('');
 

@@ -1,0 +1,83 @@
+import React, { useState } from 'react';
+import Modal from '../../utils/modal';
+import { isMobile } from 'react-device-detect';
+import styled from 'styled-components';
+
+import dynamic from 'next/dynamic';
+const WalletModal = dynamic(() => import('./walletModal'), {
+  ssr: false,
+});
+
+const Auth = () => {
+  const [isOpen, toggle] = useState(false);
+
+  const handleClick = () => {
+    toggle(true);
+  };
+
+  const ModalContent = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 1.6rem 0 1.6rem;
+  `;
+
+  const config = {
+    supportedChainIds: [1, 56, 137, 80001], // 1 - ethereum mainnet, 56 - binance smart chain, 137 - polygon mainnet, 80001 - polygon testnet
+    connectors: {
+      walletconnect: {
+        qrcode: true,
+      },
+      walletlink: {
+        qrcode: true,
+      },
+    },
+  };
+  return (
+    <div>
+      <div className="flex flex-wrap md:justify-center w-full">
+        <div className="relative flex flex-col bg-white rounded-2xl border-0 shadow top-1/2 translate-y-1/2 w-1/3 text-center">
+          <div className="flex-1 p-10">
+            <div className="text-center">
+              <img
+                src="/assets/images/logo.png"
+                alt="Popper"
+                width="60%"
+                className="mx-auto"
+              />
+            </div>
+            <div className="text-center my-5 text-base">
+              <p>Please connect your wallet</p>
+            </div>
+            <div className="flex">
+              <button
+                className="btn bg-red-100 text-red-400 w-full"
+                onClick={handleClick}
+              >
+                Connect to a wallet
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Modal
+        isOpen={isOpen}
+        handleClose={() => toggle(false)}
+        width={isMobile ? 85 : 35}
+        height={isMobile ? 60 : 80}
+        title="Connect to a wallet"
+      >
+        <ModalContent className="flex-column">
+          <WalletModal
+            isOpen={isOpen}
+            onClose={() => toggle(false)}
+            config={config}
+          />
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
+
+export default Auth;
