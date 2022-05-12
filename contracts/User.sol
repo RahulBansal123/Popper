@@ -38,16 +38,16 @@ contract User{
     }
 
     // Create a user
-    function createUser(string memory _name, address _wallet) public userExists(_wallet) userCondition(_wallet, _name) returns (uint256 _userId){
+    function createUser(string memory _name) public userExists(msg.sender) userCondition(msg.sender, _name) returns (uint256 _userId){
 
-        users[userId] = UserDetails(_name ,_wallet);
-        usersWallet[_wallet] = userId;
+        users[userId] = UserDetails(_name ,msg.sender);
+        usersWallet[msg.sender] = userId;
 
         _userId = userId;
         userId += 1;
         require(userId != _userId, "expected incremented userId");
 
-        emit UserCreated(_userId, _name, _wallet);
+        emit UserCreated(_userId, _name, msg.sender);
         return _userId;
     }
 
@@ -56,7 +56,6 @@ contract User{
         uint256 _id = usersWallet[msg.sender];
 
         delete usersWallet[msg.sender];
-        delete users[_id];
 
         users[_id] = UserDetails(_name,_wallet);
         usersWallet[_wallet] = _id;
@@ -65,10 +64,10 @@ contract User{
     }
 
     // Get user details
-    function getUser(address _wallet) public view returns (uint256 _id, string memory _name){
-        _id = usersWallet[_wallet];
-        _name = users[_id].name;
-        return (_id, _name);
+    function getUser(address _wallet) public view returns (uint256 id, string memory name, address wallet){
+        id = usersWallet[_wallet];
+        name = users[id].name;
+        return (id, name, _wallet);
     }
 }
 

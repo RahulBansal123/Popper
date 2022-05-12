@@ -23,7 +23,7 @@ contract PostContract{
 
     // Events
     event PostCreated(uint postId, uint ownerId);
-    event Cheered(uint postId, uint ownerId);
+    event Cheered(uint postId);
 
 
     // View the post metadata for a specific postId
@@ -68,5 +68,7 @@ contract PostContract{
 
         payable(_owner).transfer(msg.value);
         postCheeredAmount[_postId] += msg.value;
+
+        emit Cheered(_postId);
     }
 }

@@ -1,5 +1,4 @@
 declare let window: any;
-import { useWeb3React } from '@web3-react/core';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Web3 from 'web3';
 import PostContract from '../abis/PostContract.json';
@@ -19,7 +18,7 @@ interface DataContextProps {
   ) => Promise<void>;
   updatePosts: () => Promise<void>;
   getPost: (id: number) => Promise<void>;
-  cheerOwner: (id: string, amount: string) => Promise<void>;
+  cheerOwner: (id: number, amount: number) => Promise<void>;
   addUser: (name: string, wallet: string) => Promise<void>;
   updateUser: (name: string, wallet: string) => Promise<void>;
   getUser: (wallet: string) => Promise<void>;
@@ -52,7 +51,6 @@ export const DataProvider: React.FC = ({ children }) => {
 export const useData = () => useContext<DataContextProps>(DataContext);
 
 export const useProviderData = () => {
-  const { account: currentAccount } = useWeb3React();
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [postCount, setPostCount] = useState(0);
@@ -81,7 +79,8 @@ export const useProviderData = () => {
 
   const loadData = async () => {
     const web3 = window.web3;
-    setAccount(currentAccount);
+    const allAccounts = await web3.eth.getAccounts();
+    setAccount(allAccounts[0]);
 
     try {
       const networkId = await web3.eth.net.getId();
@@ -108,8 +107,8 @@ export const useProviderData = () => {
 
         let postList = [];
         for (let i = 1; i <= count; i++) {
-          const image = await postContract.methods.getPost(i).call();
-          postList.push(image);
+          const post = await postContract.methods.getPost(i).call();
+          postList.push(post);
         }
         postList.reverse();
         setPosts(postList);
@@ -151,10 +150,11 @@ export const useProviderData = () => {
     setLoading(true);
     let postId = -1;
     if (contract.post !== undefined) {
+      console.log('addPost', account);
       try {
         postId = await contract.post.methods
           .addPost(ownerId, digest, hash, size)
-          .call();
+          .send({ from: account, gasLimit: 100000 });
       } catch (error) {
         console.error(error);
       }
@@ -167,14 +167,15 @@ export const useProviderData = () => {
     setLoading(true);
     if (contract.post !== undefined) {
       try {
-        const count = await contract.post.methods.postId().call().call();
+        const count = await contract.post.methods.postId().call();
         setPostCount(count);
 
         const postList = [];
 
         for (let i = 1; i <= count; i++) {
-          const image = await contract.post.methods.getPost(i).call();
-          postList.push(image);
+          const post = await contract.post.methods.getPost(i).call();
+          if (post?.owner !== '0x0000000000000000000000000000000000000000')
+            postList.push(post);
         }
         postList.reverse();
         setPosts(postList);
@@ -197,12 +198,12 @@ export const useProviderData = () => {
     setLoading(false);
   };
 
-  const cheerOwner = async (id: string, amount: string) => {
+  const cheerOwner = async (id: number, amount: number) => {
     setLoading(true);
     try {
       let res = await contract.post.methods
         .cheerCreator(id)
-        .send({ from: account, value: amount });
+        .send({ from: account, value: amount, gasLimit: 100000 });
     } catch (error) {
       console.error(error);
     }

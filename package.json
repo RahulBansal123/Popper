@@ -38,6 +38,8 @@
     "web3": "^1.5.1"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/chai-as-promised": "^7.1.5",
     "@types/react": "^17.0.16",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
