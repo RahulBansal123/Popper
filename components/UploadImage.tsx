@@ -2,16 +2,23 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { TextArea } from './TextArea';
 import toast from '../utils/alert';
-import { decodeMultihash } from '../utils';
+import { storePost } from '../utils';
+import { useSelector } from 'react-redux';
 
 interface Props {
   isOpen: boolean;
   closeModal: () => void;
+  account: string;
+  contract: any;
 }
 
-export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
-  // const { account, storePost, addPost } = useData();
-
+export const UploadImage: React.FC<Props> = ({
+  isOpen,
+  closeModal,
+  account,
+  contract,
+}) => {
+  const user = useSelector((state: any) => state.auth.user);
   const [buttonTxt, setButtonTxt] = useState<string>('Upload');
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState<string>('');
@@ -20,21 +27,29 @@ export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
   const uploadImage = async () => {
     try {
       setButtonTxt('Uploading to IPFS...');
-      // const res = await storePost(file, title, description, account);
-      // console.log(res);
+
+      const res = await storePost(file, title, description, account);
 
       setButtonTxt('Storing in smart contract...');
-      // await contract.methods.createPost(res.postId).send({ from: account });
-      // const multihash = decodeMultihash(res.cid);
-      // await addPost(1, multihash.digest, multihash.hashFn, multihash.size);
 
-      // toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
+      const uId: number = +user.id;
+
+      console.log(uId, typeof uId, contract, res.cid, account);
+
+      await contract.methods
+        .addPost(uId, res.cid)
+        .send({ from: account, gasLimit: 6021975 });
+
+      toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
+
       setFile(null);
+      setTitle('');
       setDescription('');
       setButtonTxt('Upload');
     } catch (error) {
       console.error(error);
       toast({ type: 'error', message: 'Please try again' });
+      setButtonTxt('Upload');
     } finally {
       closeModal();
     }

@@ -18,13 +18,13 @@ contract User{
     // Events
     event UserCreated(
         uint256 id,
-        string name,
-        address wallet
+        string indexed name,
+        address indexed wallet
     );
     event UserUpdated(
         uint256 id,
-        string name,
-        address wallet
+        string indexed name,
+        address indexed wallet
     );
 
     // Modifier

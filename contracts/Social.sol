@@ -10,8 +10,8 @@ contract Social {
     mapping(uint => mapping(string => uint[])) private userIds;
 
     // Events
-    event LevelCreated(uint ownerId, string level);
-    event LevelUpdated(uint ownerId, string level);
+    event LevelCreated(uint indexed ownerId, string indexed level);
+    event LevelUpdated(uint indexed ownerId, string indexed level);
 
     // Modifier
     modifier levelExists(uint ownerId, string memory level) {

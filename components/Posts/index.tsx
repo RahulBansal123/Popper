@@ -1,8 +1,20 @@
 import Identicon from 'identicon.js';
-// import { ethers } from 'ethers';
 import toast from '../../utils/alert';
 
-const Posts = () => {
+const Posts = ({ posts, account, contract }) => {
+  const cheerOwner = async (id: number, amount: number) => {
+    try {
+      await contract.methods
+        .cheerCreator(id)
+        .send({ from: account, value: amount, gasLimit: 100000 });
+      toast({
+        type: 'success',
+        message: 'Cheered creator',
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // const {
   //   cheerOwner,
   //   postCount,
@@ -44,31 +56,19 @@ const Posts = () => {
   //   }
   // };
 
-  const posts = [
-    {
-      id: 1,
-      cheers: 2,
-      address: '0xbchwebjhbwjh3bhjwhehw',
-      title: 'Titleeee',
-      description: 'New posttttt',
-      hash: 'bafybeicfn7oxgxxd2pgqxvjew4lzqfibwj6lbpzd3xyrgu73lvul23qbxu',
-    },
-  ];
   return (
     <div className="w-1/2 flex flex-col mx-auto">
-      {/* <button onClick={add}>Add Post</button> */}
       {posts.length > 0 &&
         posts.map((post) => (
           <Post
             key={post.id}
+            id={post.id}
             cheers={post.cheers}
             title={post.title}
             address={post.address}
             description={post.description}
             hash={post.hash}
-            id={post.id}
-            // cheer={cheer}
-            cheer={() => {}}
+            cheer={cheerOwner}
           />
         ))}
     </div>

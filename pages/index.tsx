@@ -1,7 +1,8 @@
-import Web3Container from '../lib/Web3Container';
-import Main from '../containers/home';
-import withAuth from '../components/withAuth';
 import PostContract from '../abis/PostContract.json';
+import Main from '../containers/home';
+
+import Web3Container from '../lib/Web3Container';
+import withAuth from '../components/withAuth';
 
 function Home() {
   return (

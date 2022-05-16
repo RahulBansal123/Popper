@@ -23,8 +23,8 @@ contract PostContract{
 
 
     // Events
-    event PostCreated(uint postId, uint ownerId);
-    event Cheered(uint postId);
+    event PostCreated(uint indexed postId, uint indexed ownerId);
+    event Cheered(uint indexed postId);
 
 
     // View the post metadata for a specific postId
