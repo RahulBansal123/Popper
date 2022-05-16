@@ -1,51 +1,48 @@
 import Identicon from 'identicon.js';
-import { useData } from '../../contexts/DataContext';
 // import { ethers } from 'ethers';
 import toast from '../../utils/alert';
 
 const Posts = () => {
-  const {
-    cheerOwner,
-    postCount,
-    posts: tPosts,
-    addPost,
-    updatePosts,
-  } = useData();
-  const add = async () => {
-    try {
-      await addPost(1, 'qwjkenq', 100, 100);
-      await updatePosts();
-      toast({
-        type: 'success',
-        message: 'Post added',
-      });
-    } catch (error) {
-      console.log(error);
-      toast({
-        type: 'error',
-        message: 'Please try again',
-      });
-    }
-  };
+  // const {
+  //   cheerOwner,
+  //   postCount,
+  //   posts: tPosts,
+  //   addPost,
+  //   updatePosts,
+  // } = useData();
+  // const add = async () => {
+  //   try {
+  //     await addPost(1, 'qwqwqw');
+  //     await updatePosts();
+  //     toast({
+  //       type: 'success',
+  //       message: 'Post added',
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast({
+  //       type: 'error',
+  //       message: 'Please try again',
+  //     });
+  //   }
+  // };
 
-  const cheer = async (postId: number, amount: number) => {
-    try {
-      await cheerOwner(postId, amount);
-      await updatePosts();
-      toast({
-        type: 'success',
-        message: 'Post cheered',
-      });
-    } catch (error) {
-      console.log(error);
-      toast({
-        type: 'error',
-        message: 'Please try again',
-      });
-    }
-  };
-
-  console.log(tPosts, postCount);
+  // const cheer = async (postId: number, amount: number) => {
+  //   try {
+  //     await cheerOwner(postId, amount);
+  //     await updatePosts();
+  //     toast({
+  //       type: 'success',
+  //       message: 'Post cheered',
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast({
+  //       type: 'error',
+  //       message: 'Please try again',
+  //     });
+  //   }
+  // };
 
   const posts = [
     {
@@ -59,7 +56,7 @@ const Posts = () => {
   ];
   return (
     <div className="w-1/2 flex flex-col mx-auto">
-      <button onClick={add}>Add Post</button>
+      {/* <button onClick={add}>Add Post</button> */}
       {posts.length > 0 &&
         posts.map((post) => (
           <Post
@@ -70,7 +67,8 @@ const Posts = () => {
             description={post.description}
             hash={post.hash}
             id={post.id}
-            cheer={cheer}
+            // cheer={cheer}
+            cheer={() => {}}
           />
         ))}
     </div>
@@ -113,7 +111,8 @@ const Post = ({ address, title, description, cheers, hash, id, cheer }) => {
           </div>
           <button
             className="btn !rounded-2xl bg-blue-800 text-white hover:bg-[#004c81e6]"
-            onClick={() => cheer(id, 1)}
+            onClick={() => cheer()}
+            // onClick={() => cheer(id, 1)}
           >
             Cheer
           </button>

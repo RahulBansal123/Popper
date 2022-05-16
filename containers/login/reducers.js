@@ -1,6 +1,8 @@
 import { LOGIN_ACTION } from './constants';
 
-const initialState = {};
+const initialState = {
+  login: null,
+};
 
 const applicationReducer = (state = initialState, action) => {
   switch (action.type) {

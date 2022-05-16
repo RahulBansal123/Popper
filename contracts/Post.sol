@@ -4,9 +4,7 @@ pragma solidity ^0.6.0;
 contract PostContract{
 
     struct PostMultihash {	
-        string digest;	
-        uint8 hashFn;	
-        uint8 size;	
+        string ipfsHash;	
         address owner;
     }
     uint public postId = 1;
@@ -20,6 +18,9 @@ contract PostContract{
     // Mapping of postId to total cheered amount
     mapping(uint => uint) private postCheeredAmount;
 
+    // Mapping of userId to their level wise posts
+    mapping(uint => mapping(string => uint[])) private userLevelPosts;
+
 
     // Events
     event PostCreated(uint postId, uint ownerId);
@@ -28,25 +29,19 @@ contract PostContract{
 
     // View the post metadata for a specific postId
     function getPost(uint _postId) view public returns (  
-        string memory multihashDigest,
-        uint8 multihashHashFn,
-        uint8 multihashSize,
+        string memory ipfsHash,
         address owner){
         PostMultihash memory postMultihash = postMetadataMultihashes[_postId];
         return (
-            postMultihash.digest,
-            postMultihash.hashFn,
-            postMultihash.size,
+            postMultihash.ipfsHash,
             postMultihash.owner
         );
     }
 
     // Create a post
-    function addPost(uint _postOwnerId, string calldata _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (uint _postId){
+    function addPost(uint _postOwnerId, string calldata _hash) external returns (uint _postId){
         postMetadataMultihashes[postId] = PostMultihash({
-            digest: _multihashDigest,
-            hashFn: _multihashHashFn,
-            size: _multihashSize,
+            ipfsHash: _hash,
             owner: msg.sender
         });
         postOwnerIds[_postOwnerId].push(postId);
@@ -70,5 +65,26 @@ contract PostContract{
         postCheeredAmount[_postId] += msg.value;
 
         emit Cheered(_postId);
+    }
+
+    // Get total cheers of a post
+    function getCheeredAmount(uint _postId) view public returns (uint _cheeredAmount){
+        require(_postId > 0 && _postId < postId, "invalid postId");
+        return postCheeredAmount[_postId];
+    }
+
+    // Add a post id to a user's level wise posts
+    function addPostToUserLevelPosts(uint _userId, string calldata _level, uint _postId) external{
+        require(_userId > 0, "invalid userId");
+        require(_postId > 0 && _postId < postId, "invalid postId");
+
+        userLevelPosts[_userId][_level].push(_postId);
+    }
+
+    // Get posts of a user for a specific level
+    function getPostsForUser(uint _userId, string memory _level) view public returns (uint[] memory _posts){
+        require(_userId > 0, "invalid userId");
+
+        return userLevelPosts[_userId][_level];
     }
 }

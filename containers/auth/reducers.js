@@ -1,11 +1,16 @@
-import { LOGIN_ACTION } from './constants';
+import { LOGIN_ACTION, SET_USER } from './constants';
 
-const initialState = {};
+const initialState = { user: null };
 
 const applicationReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_ACTION:
       return state;
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

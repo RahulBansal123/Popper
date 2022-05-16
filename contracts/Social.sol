@@ -2,15 +2,9 @@
 pragma solidity ^0.6.0;
 
 contract Social {
-    struct LevelMultihash {	
-        string digest;	
-        uint8 hashFn;	
-        uint8 size;	
-    }
-
     // Mapping of users to their level's details
     // Levels can be: 'basic', 'gold', 'platinum'
-    mapping(uint => mapping(string => LevelMultihash)) private levelOwnerIds;
+    mapping(uint => mapping(string => string)) private levelOwnerIds;
 
     // Mapping of user to owner and the level subscribed
     mapping(uint => mapping(string => uint[])) private userIds;
@@ -21,47 +15,30 @@ contract Social {
 
     // Modifier
     modifier levelExists(uint ownerId, string memory level) {
-        require(keccak256(abi.encodePacked(levelOwnerIds[ownerId][level].digest))!=keccak256(abi.encodePacked("")),"Level doesn't exists");
+        require(keccak256(abi.encodePacked(levelOwnerIds[ownerId][level]))!=keccak256(abi.encodePacked("")),"Level doesn't exists");
         _;
     }   
 
     // Get level details of a user
     function getLevel(uint _ownerId, string memory _level) public levelExists(_ownerId, _level) view returns (  
-        string memory digest,
-        uint8 hashFn,
-        uint8 size
+        string memory _ipfsHash
     ) {
-        LevelMultihash memory _levelMultihash = levelOwnerIds[_ownerId][_level];
-        return (_levelMultihash.digest, _levelMultihash.hashFn, _levelMultihash.size);
+        return levelOwnerIds[_ownerId][_level];
     }
 
     // Create a level
-    function addLevel(uint _ownerId, string calldata _level, string calldata _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (bool status){
-        levelOwnerIds[_ownerId][_level] = LevelMultihash({
-            digest: _multihashDigest,
-            hashFn: _multihashHashFn,
-            size: _multihashSize
-        });
+    function addLevel(uint _ownerId, string calldata _level, string calldata _ipfsHash) external returns (bool status){
+        levelOwnerIds[_ownerId][_level] = _ipfsHash;
         emit LevelCreated(_ownerId, _level);
         return true;
     }
 
     // Update a level
-    function updateLevel(uint _ownerId, string calldata _level, string calldata _multihashDigest, uint8 _multihashHashFn, uint8 _multihashSize) external returns (bool updatePerformed){
+    function updateLevel(uint _ownerId, string calldata _level, string calldata _ipfsHash) external returns (bool updatePerformed){
         updatePerformed = false;
 
-        if(keccak256(abi.encodePacked(levelOwnerIds[_ownerId][_level].digest)) != keccak256(abi.encodePacked(_multihashDigest))){
-            levelOwnerIds[_ownerId][_level].digest = _multihashDigest;
-            updatePerformed = true;
-        }
-
-        if(levelOwnerIds[_ownerId][_level].hashFn != _multihashHashFn){
-            levelOwnerIds[_ownerId][_level].hashFn = _multihashHashFn;
-            updatePerformed = true;
-        }
-
-        if(levelOwnerIds[_ownerId][_level].size != _multihashSize){
-            levelOwnerIds[_ownerId][_level].size = _multihashSize;
+        if(keccak256(abi.encodePacked(levelOwnerIds[_ownerId][_level])) != keccak256(abi.encodePacked(_ipfsHash))){
+            levelOwnerIds[_ownerId][_level] = _ipfsHash;
             updatePerformed = true;
         }
 

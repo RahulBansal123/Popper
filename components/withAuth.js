@@ -5,12 +5,12 @@ const withAuth = (WrappedComponent) => {
   return (props) => {
     // checks whether we are on client / browser or server.
     if (typeof window !== undefined) {
-      const Router = useRouter();
+      const router = useRouter();
       const { account } = useWeb3React();
 
       // If there is no account we redirect to "/auth" page.
       if (!account) {
-        Router.replace('/auth');
+        router.replace('/auth');
         return null;
       }
 

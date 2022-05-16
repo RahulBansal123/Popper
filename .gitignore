@@ -35,3 +35,6 @@ yarn-error.log*
 .vercel
 
 .secret
+
+package-lock.json
+yarn.lock

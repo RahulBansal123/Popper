@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 
+import authReducer from './containers/auth/reducers';
 import loginReducer from './containers/login/reducers';
 
-const createReducer = (history) =>
-  combineReducers({
-    login: loginReducer,
-  });
+const reducers = {
+  auth: authReducer,
+  login: loginReducer,
+};
 
-export default createReducer;
+export default combineReducers(reducers);

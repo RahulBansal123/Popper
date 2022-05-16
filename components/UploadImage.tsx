@@ -1,7 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { create } from 'ipfs-http-client';
 import { Fragment, useState } from 'react';
 import { TextArea } from './TextArea';
+import toast from '../utils/alert';
+import { decodeMultihash } from '../utils';
 
 interface Props {
   isOpen: boolean;
@@ -9,33 +10,34 @@ interface Props {
 }
 
 export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
+  // const { account, storePost, addPost } = useData();
+
   const [buttonTxt, setButtonTxt] = useState<string>('Upload');
   const [file, setFile] = useState<File | null>(null);
-  // const { contract, account, updateImages } = useData();
-  const contract = '';
-  const account = '';
-  const updateImages = () => {};
-  const client = create({ url: 'https://ipfs.infura.io:5001/api/v0' });
+  const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
   const uploadImage = async () => {
-    setButtonTxt('Uploading to IPFS...');
-    const added = await client.add(file);
-    setButtonTxt('Creating smart contract...');
-    console.log(added, contract, account);
-    contract.methods
-      .uploadImage(added.path, description)
-      .send({ from: account })
-      .then(async () => {
-        await updateImages();
-        setFile(null);
-        setDescription('');
-        setButtonTxt('Upload');
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
-      });
+    try {
+      setButtonTxt('Uploading to IPFS...');
+      // const res = await storePost(file, title, description, account);
+      // console.log(res);
+
+      setButtonTxt('Storing in smart contract...');
+      // await contract.methods.createPost(res.postId).send({ from: account });
+      // const multihash = decodeMultihash(res.cid);
+      // await addPost(1, multihash.digest, multihash.hashFn, multihash.size);
+
+      // toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
+      setFile(null);
+      setDescription('');
+      setButtonTxt('Upload');
+    } catch (error) {
+      console.error(error);
+      toast({ type: 'error', message: 'Please try again' });
+    } finally {
+      closeModal();
+    }
   };
 
   return (
@@ -43,7 +45,7 @@ export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-50 overflow-y-auto"
           onClose={closeModal}
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-40" />
@@ -61,7 +63,6 @@ export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -100,12 +101,25 @@ export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
 
                 <div className="mt-4">
                   <TextArea
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                    varient="ongray"
+                    placeholder="Title"
+                    rows={1}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <TextArea
                     value={description}
                     onChange={(e) => {
                       setDescription(e.target.value);
                     }}
                     varient="ongray"
                     placeholder="Description"
+                    rows={2}
                   />
                 </div>
 
@@ -113,7 +127,7 @@ export const UploadImage: React.FC<Props> = ({ isOpen, closeModal }) => {
                   <button
                     type="button"
                     disabled={buttonTxt !== 'Upload'}
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="float-right btn bg-blue-800 text-white hover:bg-[#004c81e6]"
                     onClick={() => {
                       if (file) uploadImage();
                     }}

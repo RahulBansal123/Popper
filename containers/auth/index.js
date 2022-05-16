@@ -8,20 +8,20 @@ const WalletModal = dynamic(() => import('./walletModal'), {
   ssr: false,
 });
 
+const ModalContent = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 1.6rem 0 1.6rem;
+`;
+
 const Auth = () => {
   const [isOpen, toggle] = useState(false);
 
   const handleClick = () => {
     toggle(true);
   };
-
-  const ModalContent = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 1.6rem 0 1.6rem;
-  `;
 
   const config = {
     supportedChainIds: [1, 56, 137, 80001], // 1 - ethereum mainnet, 56 - binance smart chain, 137 - polygon mainnet, 80001 - polygon testnet

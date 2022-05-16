@@ -34,6 +34,7 @@ function Header() {
               width={35}
               height={35}
               src={`data:image/png;base64, ${data}`}
+              className="rounded-full"
             />
           )}
         </div>

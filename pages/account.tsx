@@ -11,7 +11,7 @@ import { useState } from 'react';
 const Account = () => {
   const router = useRouter();
 
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // const { loading } = useData();
 
   function closeModal() {
