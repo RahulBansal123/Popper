@@ -53,7 +53,7 @@ contract Social {
     }
 
     // Check if user is subscribed to a level
-    function isSubscribed(uint _ownerId, uint _userId, string calldata _level) public view returns (bool subscribed){
+    function isSubscribed(uint _ownerId, uint _userId, string memory _level) public view returns (bool subscribed){
         subscribed = false;
         for (uint i = 0; i < userIds[_ownerId][_level].length; i++) {
             if(userIds[_ownerId][_level][i] == _userId){

@@ -83,7 +83,7 @@ contract PostContract is Social, User {
     }
 
     // Get posts of a user for a specific level
-    function getPostsForUser(uint _ownerId, uint _userId, string calldata _level) view public returns(uint[] memory){
+    function getPostsForUser(uint _ownerId, uint _userId, string memory _level) view public returns(uint[] memory){
         require(_userId > 0, "invalid userId");
 
         // require(social.isSubscribed(_ownerId, _userId, _level), "user is not subscribed to the level");
