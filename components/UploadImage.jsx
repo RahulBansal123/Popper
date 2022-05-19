@@ -3,26 +3,16 @@ import { Fragment, useState } from 'react';
 import { TextArea } from './TextArea';
 import toast from '../utils/alert';
 import { storePost } from '../utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostsForUser } from '../containers/main/actions';
 
-interface Props {
-  isOpen: boolean;
-  closeModal: () => void;
-  account: string;
-  contract: any;
-}
-
-export const UploadImage: React.FC<Props> = ({
-  isOpen,
-  closeModal,
-  account,
-  contract,
-}) => {
-  const user = useSelector((state: any) => state.auth.user);
-  const [buttonTxt, setButtonTxt] = useState<string>('Upload');
-  const [file, setFile] = useState<File | null>(null);
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const [buttonTxt, setButtonTxt] = useState('Upload');
+  const [file, setFile] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const uploadImage = async () => {
     try {
@@ -32,7 +22,7 @@ export const UploadImage: React.FC<Props> = ({
 
       setButtonTxt('Storing in smart contract...');
 
-      const uId: number = +user.id;
+      const uId = +user.id;
 
       console.log(uId, typeof uId, contract, res.cid, account);
 
@@ -46,6 +36,7 @@ export const UploadImage: React.FC<Props> = ({
       setTitle('');
       setDescription('');
       setButtonTxt('Upload');
+      await dispatch(getPostsForUser(contract));
     } catch (error) {
       console.error(error);
       toast({ type: 'error', message: 'Please try again' });

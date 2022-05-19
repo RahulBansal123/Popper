@@ -3,7 +3,11 @@ import Identicon from 'identicon.js';
 import toast from '../../utils/alert';
 import { getPostMetadata } from '../../utils';
 
+import web3 from 'web3';
+
 const Post = ({ post, account, contract }) => {
+  const [isSend, setIsSend] = useState(false);
+  const [cheerValue, setCheerValue] = useState('0.0001');
   const [details, setDetails] = useState({
     owner: '0x0000000000000000000000000000000000000000',
     title: '',
@@ -14,12 +18,9 @@ const Post = ({ post, account, contract }) => {
 
   useEffect(() => {
     const getMetadata = async () => {
-      console.log('post', post);
       const res = await getPostMetadata(post.hash.ipfsHash);
-      console.log('res', res);
-      const { owner, title, description, cheers, gatewayURL } = res;
+      const { owner, title, description, gatewayURL } = res;
 
-      console.log('details', owner, title, description, cheers, gatewayURL);
       setDetails({
         owner,
         title,
@@ -29,37 +30,52 @@ const Post = ({ post, account, contract }) => {
     };
 
     const getCheers = async () => {
-      const cheers = await contract.methods.getCheeredAmount(post.id).call();
-      console.log('cheers', cheers);
+      let cheers = await contract.methods.getCheeredAmount(post.id).call();
+      cheers = web3.utils.fromWei(`${cheers}`, 'ether');
       setDetails((prev) => ({ ...prev, cheers }));
     };
 
-    if (post?.hash?.ipfsHash?.length > 0) getMetadata();
-    getCheers();
-  }, [post]);
+    if (post?.hash?.ipfsHash?.length > 0) {
+      getMetadata();
+      getCheers();
+    }
+  }, [post.hash.ipfsHash]);
 
   const data = new Identicon(details.owner, 200).toString();
 
   const cheerOwner = async (amount) => {
     try {
-      await contract.methods
-        .cheerCreator(post.id)
-        .send({ from: account, value: `${amount} GWei`, gasLimit: 100000 });
+      await contract.methods.cheerCreator(post.id).send({
+        from: account,
+        value: web3.utils.toWei(amount),
+        gasLimit: 100000,
+      });
       toast({
         type: 'success',
         message: 'Cheered creator',
       });
+      setIsSend(false);
     } catch (error) {
+      toast({
+        type: 'error',
+        message: 'Please try again',
+      });
       console.error(error);
     }
   };
+
   return (
     <div className="rounded-2xl overflow-hidden shadow-lg bg-white mb-10">
       <div className="w-full h-fit">
         <img src={details.gatewayURL} className="w-full h-full" />
       </div>
       <div className="px-3">
-        <h3 className="text-lg mt-2 font-semibold">{details.title}</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg mt-2 font-semibold">{details.title}</h3>
+          <h3 className="text-lg mt-2 font-semibold text-gray-500">
+            {details.cheers} ETH
+          </h3>
+        </div>
         <p className="text-base font-normal text-gray-700 my-2">
           {details.description}
         </p>
@@ -82,11 +98,21 @@ const Post = ({ post, account, contract }) => {
               {details.owner.slice(0, 20)}...
             </p>
           </div>
+          {isSend && (
+            <input
+              class="appearance-none border border-blue-800 rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              placeholder="cheer value(ETH)"
+              value={cheerValue}
+              onChange={(e) => setCheerValue(e.target.value)}
+            />
+          )}
+
           <button
-            className="btn !rounded-2xl bg-blue-800 text-white hover:bg-[#004c81e6]"
-            onClick={() => cheerOwner(100)}
+            className="btn !rounded-full bg-blue-800 text-white hover:bg-[#004c81e6]"
+            onClick={() => (isSend ? cheerOwner(cheerValue) : setIsSend(true))}
           >
-            Cheer
+            {isSend ? 'Send' : 'Cheer'}
           </button>
         </div>
       </div>

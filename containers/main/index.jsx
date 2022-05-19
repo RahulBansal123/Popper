@@ -1,25 +1,22 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import { connect } from 'react-redux';
 
 import Header from '../../components/Layout/Header';
 import Details from '../../components/Account/Details';
 import { UploadImage } from '../../components/UploadImage';
-import { useSelector } from 'react-redux';
+import { getPostsForUser } from './actions';
 
 const Posts = dynamic(() => import('../../components/Posts'), {
   ssr: false,
 });
 
-const Home = ({ account, contract }) => {
-  const user = useSelector((state) => state.auth.user);
-
+const Home = ({ posts, account, contract, getPostsForUser }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPostsForUser();
+    getPostsForUser(contract);
   }, []);
 
   function closeModal() {
@@ -29,31 +26,6 @@ const Home = ({ account, contract }) => {
   function openModal() {
     setIsOpen(true);
   }
-
-  const getPost = async (id) => {
-    try {
-      const post = await contract.methods.getPost(id).call();
-      return post;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getPostsForUser = async () => {
-    const uId = +user.id;
-    setLoading(true);
-
-    const postIds = await contract.methods.getPublicPosts([1]).call();
-
-    let temp = [];
-    for (let i = 0; i < postIds.length; i++) {
-      if (postIds[i] == '0') continue;
-      const postHash = await getPost(postIds[i]);
-      temp = [...temp, { id: i, hash: postHash }];
-    }
-    setPosts(temp);
-    setLoading(false);
-  };
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen py-2">
@@ -80,4 +52,13 @@ const Home = ({ account, contract }) => {
     </div>
   );
 };
-export default Home;
+
+const mapStateToProps = (state) => ({
+  posts: state.main.posts,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getPostsForUser: (contract) => dispatch(getPostsForUser(contract)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
