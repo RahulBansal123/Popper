@@ -22,6 +22,9 @@ contract PostContract is Social, User {
     // Mapping of postId to total cheered amount
     mapping(uint => uint) private postCheeredAmount;
 
+    // Mapping of users with their cheered creators
+    mapping(address => address[]) private userCheeredCreators;
+
     // Mapping of userId to their level wise posts
     mapping(uint => mapping(string => uint[])) private userLevelPosts;
 
@@ -72,6 +75,7 @@ contract PostContract is Social, User {
 
         payable(_owner).transfer(msg.value);
         postCheeredAmount[_postId] += msg.value;
+        userCheeredCreators[msg.sender].push(_owner);
 
         emit Cheered(_postId);
     }
@@ -80,6 +84,12 @@ contract PostContract is Social, User {
     function getCheeredAmount(uint _postId) view public returns (uint _cheeredAmount){
         require(_postId > 0 && _postId < postId, "invalid postId");
         return postCheeredAmount[_postId];
+    }
+
+    // Get total cheers of a user
+    function getUserCheeredCreators() view public returns (uint[] memory){
+        require(_user != address(0x0), "invalid user");
+        return userCheeredCreators[msg.sender];
     }
 
     // Get posts of a user for a specific level

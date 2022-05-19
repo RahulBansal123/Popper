@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import withAuth from '../components/withAuth';
@@ -6,7 +7,6 @@ import Header from '../components/Layout/Header';
 import Details from '../components/Account/Details';
 import Levels from '../components/Levels';
 import { UploadImage } from '../components/UploadImage';
-import { useState } from 'react';
 
 const Account = () => {
   const router = useRouter();
@@ -29,7 +29,6 @@ const Account = () => {
       </Head>
       <Header />
       <div className="container py-4 flex">
-        <UploadImage isOpen={isOpen} closeModal={closeModal} />
         <Details address={router.query.address} openModal={openModal} />
         <div className="ml-3 w-full">
           <Levels />

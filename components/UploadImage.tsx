@@ -37,7 +37,7 @@ export const UploadImage: React.FC<Props> = ({
       console.log(uId, typeof uId, contract, res.cid, account);
 
       await contract.methods
-        .addPost(uId, res.cid)
+        .addPost(uId, 'public', res.cid)
         .send({ from: account, gasLimit: 6021975 });
 
       toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
@@ -110,7 +110,7 @@ export const UploadImage: React.FC<Props> = ({
 
                 {file && (
                   <div className="mt-2">
-                    <img src={URL.createObjectURL(file)} />
+                    <img src={URL.createObjectURL(file)} alt="preview" />
                   </div>
                 )}
 

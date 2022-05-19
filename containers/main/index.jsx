@@ -11,13 +11,8 @@ const Posts = dynamic(() => import('../../components/Posts'), {
   ssr: false,
 });
 
-interface Props {
-  account: string;
-  contract: any;
-}
-
-const Home: React.FC<Props> = ({ account, contract }) => {
-  const user = useSelector((state: any) => state.auth.user);
+const Home = ({ account, contract }) => {
+  const user = useSelector((state) => state.auth.user);
 
   const [isOpen, setIsOpen] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -35,9 +30,9 @@ const Home: React.FC<Props> = ({ account, contract }) => {
     setIsOpen(true);
   }
 
-  const getPost = async (id: number) => {
+  const getPost = async (id) => {
     try {
-      const post = await contract.post.methods.getPost(id).call();
+      const post = await contract.methods.getPost(id).call();
       return post;
     } catch (error) {
       console.error(error);
@@ -45,17 +40,16 @@ const Home: React.FC<Props> = ({ account, contract }) => {
   };
 
   const getPostsForUser = async () => {
-    const uId: number = +user.id;
+    const uId = +user.id;
     setLoading(true);
 
-    const postIds = await contract.methods
-      .addPost(uId, 'basic')
-      .send({ from: account, gasLimit: 6021975 });
+    const postIds = await contract.methods.getPublicPosts([1]).call();
 
     let temp = [];
     for (let i = 0; i < postIds.length; i++) {
-      const post = await getPost(postIds[i]);
-      temp = [...temp, post];
+      if (postIds[i] == '0') continue;
+      const postHash = await getPost(postIds[i]);
+      temp = [...temp, { id: i, hash: postHash }];
     }
     setPosts(temp);
     setLoading(false);

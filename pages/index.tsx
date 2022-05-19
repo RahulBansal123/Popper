@@ -1,5 +1,5 @@
 import PostContract from '../abis/PostContract.json';
-import Main from '../containers/home';
+import Main from '../containers/main';
 
 import Web3Container from '../lib/Web3Container';
 import withAuth from '../components/withAuth';
