@@ -87,9 +87,8 @@ contract PostContract is Social, User {
     }
 
     // Get total cheers of a user
-    function getUserCheeredCreators() view public returns (uint[] memory){
-        require(_user != address(0x0), "invalid user");
-        return userCheeredCreators[msg.sender];
+    function getUserCheeredCreators(address _user) view public returns (address[] memory){
+        return userCheeredCreators[_user];
     }
 
     // Get posts of a user for a specific level

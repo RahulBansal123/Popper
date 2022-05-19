@@ -1,10 +1,4 @@
-import { FETCH_POSTS } from './constants';
-
-export const fetchPosts = () => {
-  return {
-    type: FETCH_POSTS,
-  };
-};
+import { FETCH_CHEERS, FETCH_POSTS } from './constants';
 
 export const getPost = async (id, contract) => {
   try {
@@ -30,6 +24,20 @@ export const getPostsForUser = (contract) => {
         temp = [...temp, { id: postIds[i], hash: postHash }];
       }
       dispatch({ type: FETCH_POSTS, payload: temp });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const getCheersForUser = (userId, contract) => {
+  return async (dispatch) => {
+    try {
+      let userIds = [];
+      userIds = await contract.methods.getUserCheeredCreators(userId).call();
+      userIds = userIds.filter(Number);
+
+      dispatch({ type: FETCH_CHEERS, payload: userIds });
     } catch (err) {
       console.log(err);
     }

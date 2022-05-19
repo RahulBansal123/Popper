@@ -1,8 +1,41 @@
 import Identicon from 'identicon.js';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getCheersForUser } from '../../containers/main/actions';
 import toast from '../../utils/alert';
 
-const Details = ({ address, openModal }) => {
+const AccountProfile = (address) => {
+  const data = new Identicon(address.address, 200).toString();
+  return (
+    <img
+      width={30}
+      height={30}
+      src={`data:image/png;base64, ${data}`}
+      className="rounded-full cursor-pointer"
+      onClick={() => {
+        navigator.clipboard.writeText(address.address);
+        toast({ type: 'success', message: 'Copied to clipboard' });
+      }}
+    />
+  );
+};
+
+const Details = ({
+  address,
+  contract,
+  openModal,
+  cheers,
+  getCheersForUser,
+}) => {
+  useEffect(() => {
+    const fetchCheers = async () => {
+      await getCheersForUser(address, contract);
+    };
+    fetchCheers();
+  }, [address]);
+
   const data = new Identicon(address, 200).toString();
+
   return (
     <div className="w-1/4">
       <div className="border py-8 rounded-xl">
@@ -26,12 +59,20 @@ const Details = ({ address, openModal }) => {
         <div className="mt-8 mb-4 border border-r-0 border-l-0 p-2 text-center">
           <p className="font-semibold">Cheered Creators</p>
         </div>
-        <p className="px-5 font-light">
-          You are not cheering anyone yet!{' '}
-          <a href="/creators" className="text-blue-500 hover:underline">
-            Find creators
-          </a>
-        </p>
+        {cheers.length === 0 ? (
+          <p className="px-5 font-light">
+            You are not cheering anyone yet!{' '}
+            <a href="/creators" className="text-blue-500 hover:underline">
+              Find creators
+            </a>
+          </p>
+        ) : (
+          <div className="px-5">
+            {cheers.map((account, index) => (
+              <AccountProfile key={index} address={account} />
+            ))}
+          </div>
+        )}
 
         <div className="mt-8 mb-4 border border-r-0 border-l-0 p-2 text-center">
           <p className="font-semibold">Subscriptions</p>
@@ -43,10 +84,18 @@ const Details = ({ address, openModal }) => {
         className="border p-3 rounded-xl mt-3 bg-blue-800 text-white cursor-pointer"
         onClick={openModal}
       >
-        <p className="text-center">Upload Image</p>
+        <p className="text-center">Upload Post</p>
       </div>
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  cheers: state.main.cheers,
+});
 
-export default Details;
+const mapDispatchToProps = (dispatch) => ({
+  getCheersForUser: (user, contract) =>
+    dispatch(getCheersForUser(user, contract)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

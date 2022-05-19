@@ -44,8 +44,8 @@ const Home = ({ posts, account, contract, getPostsForUser }) => {
         <Details
           address={account}
           openModal={openModal}
-          // contract={contract}
-          // account={account}
+          contract={contract}
+          account={account}
         />
         <Posts posts={posts} contract={contract} account={account} />
       </div>
