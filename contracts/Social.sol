@@ -3,10 +3,10 @@ pragma solidity ^0.6.0;
 
 contract Social {
     // Mapping of users to their level's details
-    // Levels can be: 'basic', 'gold', 'platinum'
+    // Levels can be: 'public', 'gold', 'platinum'
     mapping(uint => mapping(string => string)) private levelOwnerIds;
 
-    // Mapping of user to owner and the level subscribed
+    // Mapping of owner to levels to users
     mapping(uint => mapping(string => uint[])) private userIds;
 
     // Events
@@ -48,7 +48,19 @@ contract Social {
     
     // Subscribe a user to a level
     function subscribe(uint _ownerId, uint _userId, string calldata _level) external levelExists(_ownerId, _level) returns (bool subscribed){
-        userIds[_userId][_level].push(_ownerId);      
+        userIds[_ownerId][_level].push(_userId);      
         return true;  
+    }
+
+    // Check if user is subscribed to a level
+    function isSubscribed(uint _ownerId, uint _userId, string calldata _level) public view returns (bool subscribed){
+        subscribed = false;
+        for (uint i = 0; i < userIds[_ownerId][_level].length; i++) {
+            if(userIds[_ownerId][_level][i] == _userId){
+                subscribed = true;
+                break;
+            }
+        }
+        return subscribed;
     }
 }

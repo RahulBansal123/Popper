@@ -1,16 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
-contract PostContract{
+import "./Social.sol";
+import "./User.sol";
+
+contract PostContract is Social, User {
 
     struct PostMultihash {	
         string ipfsHash;	
         address owner;
     }
-    uint public postId = 1;
 
-    // Mapping of userId to array of post ids
-    mapping(uint => uint[]) private postOwnerIds;
+    Social private social; 
+    User private user; 
+
+    uint public postId = 1;
 
     // Mapping of postId to Post
     mapping(uint => PostMultihash) private postMetadataMultihashes;
@@ -26,6 +30,10 @@ contract PostContract{
     event PostCreated(uint indexed postId, uint indexed ownerId);
     event Cheered(uint indexed postId);
 
+    constructor() public{
+        user = new User();
+        social = new Social();
+    }
 
     // View the post metadata for a specific postId
     function getPost(uint _postId) view public returns (  
@@ -38,13 +46,14 @@ contract PostContract{
         );
     }
 
-    // Create a post
-    function addPost(uint _postOwnerId, string calldata _hash) external returns (uint _postId){
+    // Add a post id to a user's level wise posts
+    function addPost(uint _postOwnerId, string calldata _level, string calldata _hash) external returns (uint _postId){
         postMetadataMultihashes[postId] = PostMultihash({
             ipfsHash: _hash,
             owner: msg.sender
         });
-        postOwnerIds[_postOwnerId].push(postId);
+        userLevelPosts[_postOwnerId][_level].push(postId);
+
         _postId = postId;
         postId += 1;
         require(postId != _postId, "expected incremented postId");
@@ -73,18 +82,42 @@ contract PostContract{
         return postCheeredAmount[_postId];
     }
 
-    // Add a post id to a user's level wise posts
-    function addPostToUserLevelPosts(uint _userId, string calldata _level, uint _postId) external{
+    // Get posts of a user for a specific level
+    function getPostsForUser(uint _ownerId, uint _userId, string calldata _level) view public returns(uint[] memory){
         require(_userId > 0, "invalid userId");
-        require(_postId > 0 && _postId < postId, "invalid postId");
 
-        userLevelPosts[_userId][_level].push(_postId);
+        // require(social.isSubscribed(_ownerId, _userId, _level), "user is not subscribed to the level");
+
+        uint256[] memory _postIds = new uint256[](10);
+        uint256 _index = 0;
+
+        uint256[] memory _userPosts = userLevelPosts[_ownerId][_level];
+        uint postIdsLength = _userPosts.length;
+
+        for (uint j=0; j < postIdsLength; j++) {
+            _postIds[_index] = _userPosts[j];
+            _index += 1;
+        }
+
+        return _postIds;  
     }
 
-    // Get posts of a user for a specific level
-    function getPostsForUser(uint _userId, string memory _level) view public returns (uint[] memory _posts){
-        require(_userId > 0, "invalid userId");
+    // Get public posts
+    function getPublicPosts(uint[] memory _ownerIds) view public returns (uint[] memory){
+        uint256[] memory _postIds = new uint256[](10);
+        uint256 _index = 0;
 
-        return userLevelPosts[_userId][_level];
+        uint idsLength = _ownerIds.length;
+
+        for(uint i = 0; i < idsLength; i++){
+            uint256[] memory _userPosts = userLevelPosts[_ownerIds[i]]["public"];
+            uint postIdsLength = _userPosts.length;
+
+            for (uint j=0; j < postIdsLength; j++) {
+                _postIds[_index] = _userPosts[j];
+                _index += 1;
+            }
+        }
+        return _postIds;
     }
 }
