@@ -6,17 +6,17 @@ import { connect } from 'react-redux';
 import Header from '../../components/Layout/Header';
 import Details from '../../components/Account/Details';
 import { UploadImage } from '../../components/UploadImage';
-import { getPostsForUser } from './actions';
+import { getPublicPostsForUser } from './actions';
 
 const Posts = dynamic(() => import('../../components/Posts'), {
   ssr: false,
 });
 
-const Home = ({ posts, account, contract, getPostsForUser }) => {
+const Home = ({ posts, account, contract, getPublicPostsForUser }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    getPostsForUser(contract);
+    getPublicPostsForUser(contract);
   }, []);
 
   function closeModal() {
@@ -59,7 +59,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getPostsForUser: (contract) => dispatch(getPostsForUser(contract)),
+  getPublicPostsForUser: (contract) =>
+    dispatch(getPublicPostsForUser(contract)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

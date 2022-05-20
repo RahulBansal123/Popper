@@ -4,12 +4,13 @@ import { TextArea } from './TextArea';
 import toast from '../utils/alert';
 import { storePost } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPostsForUser } from '../containers/main/actions';
+import { getPublicPostsForUser } from '../containers/main/actions';
 
 export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [buttonTxt, setButtonTxt] = useState('Upload');
+  const [name, setName] = useState('public');
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -18,25 +19,24 @@ export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
     try {
       setButtonTxt('Uploading to IPFS...');
 
-      const res = await storePost(file, title, description, account);
+      const res = await storePost(file, name, title, description, account);
 
       setButtonTxt('Storing in smart contract...');
 
       const uId = +user.id;
 
-      console.log(uId, typeof uId, contract, res.cid, account);
-
       await contract.methods
-        .addPost(uId, 'public', res.cid)
+        .addPost(uId, name, res.cid)
         .send({ from: account, gasLimit: 6021975 });
 
       toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
 
       setFile(null);
+      setName('public');
       setTitle('');
       setDescription('');
       setButtonTxt('Upload');
-      await dispatch(getPostsForUser(contract));
+      await dispatch(getPublicPostsForUser(contract));
     } catch (error) {
       console.error(error);
       toast({ type: 'error', message: 'Please try again' });
@@ -89,8 +89,27 @@ export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Upload Image to IPFS
+                  Upload Post
                 </Dialog.Title>
+
+                <div className="mt-4 flex justify-around">
+                  {['Public', 'Gold', 'Diamond'].map((level) => (
+                    <div key={level}>
+                      <label className="inline-flex items-center">
+                        <input
+                          type="radio"
+                          className="form-radio"
+                          name={level.toLowerCase()}
+                          value={level.toLowerCase()}
+                          checked={name === level.toLowerCase()}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <span className="ml-2 text-base">{level}</span>
+                      </label>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="mt-2">
                   <input
                     onChange={(e) => setFile(e.target.files[0])}

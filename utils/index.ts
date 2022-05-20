@@ -23,6 +23,7 @@ export function getWalletIcon(wallet: string) {
 
 export async function storePost(
   img: File,
+  name: string,
   title: string,
   description: string,
   owner: string
@@ -35,6 +36,7 @@ export async function storePost(
   // a URL to the full image.
   const obj = {
     path: img.name,
+    name,
     title,
     description,
     owner,

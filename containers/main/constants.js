@@ -1,2 +1,3 @@
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_CHEERS = 'FETCH_CHEERS';
+export const FETCH_LEVEL_POSTS = 'FETCH_LEVEL_POSTS';

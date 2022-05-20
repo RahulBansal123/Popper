@@ -1,8 +1,16 @@
-import { LOGIN_ACTION, SET_USER } from './constants';
+import { SET_USER } from './constants';
 
-export const loginAction = () => {
-  return {
-    type: LOGIN_ACTION,
+export const fetchUserId = (contract, wallet) => {
+  return async () => {
+    let id;
+    try {
+      const user = await contract.methods.getUser(wallet).call();
+      id = user.id;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      return id;
+    }
   };
 };
 

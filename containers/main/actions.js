@@ -9,7 +9,7 @@ export const getPost = async (id, contract) => {
   }
 };
 
-export const getPostsForUser = (contract) => {
+export const getPublicPostsForUser = (contract) => {
   return async (dispatch) => {
     try {
       let postIds = [];
@@ -40,6 +40,31 @@ export const getCheersForUser = (userId, contract) => {
       dispatch({ type: FETCH_CHEERS, payload: userIds });
     } catch (err) {
       console.log(err);
+    }
+  };
+};
+
+export const getPostsForUser = (contract, ownerId, userId, level) => {
+  return async () => {
+    try {
+      let postIds = [];
+      postIds = await contract.methods
+        .getPostsForUser(ownerId, userId, level)
+        .call();
+
+      postIds = postIds.filter(Number);
+
+      let temp = [];
+      for (let i = 0; i < postIds.length; i++) {
+        if (postIds[i] == '0') continue;
+        const postHash = await getPost(postIds[i], contract);
+        temp = [...temp, { id: postIds[i], hash: postHash }];
+      }
+
+      return temp;
+    } catch (err) {
+      console.log(err);
+      return [];
     }
   };
 };

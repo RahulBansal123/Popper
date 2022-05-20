@@ -39,7 +39,7 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
 
       toast({ type: 'success', message: `Level added` });
 
-      setName('');
+      setName('public');
       setTitle('');
       setDescription('');
       setFeatures('');
@@ -103,7 +103,7 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
 
                 <div className="mt-4 flex justify-around">
                   {['Public', 'Gold', 'Diamond'].map((level) => (
-                    <div>
+                    <div key={level}>
                       <label className="inline-flex items-center">
                         <input
                           type="radio"

@@ -9,8 +9,12 @@ import Details from '../../components/Account/Details';
 import { UploadImage } from '../../components/UploadImage';
 import Levels from '../../components/Levels';
 import { getPostsForUser } from '../../containers/main/actions';
-import { getLevelsForUser } from '../../containers/account/actions';
+import {
+  getLevelsForUser,
+  getSubscriptionsForUser,
+} from '../../containers/account/actions';
 import { AddLevel } from '../../components/AddLevel';
+import { fetchUserId } from '../auth/actions';
 
 const Posts = dynamic(() => import('../../components/Posts'), {
   ssr: false,
@@ -21,8 +25,10 @@ const AccountContainer = ({
   posts,
   account,
   contract,
-  getPostsForUser,
   getLevelsForUser,
+  getPosts,
+  getSubscriptions,
+  fetchUserId,
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +36,28 @@ const AccountContainer = ({
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
-    const uId = +user.id;
+    const oId = +user.id;
+    const temp = [];
+    const uId = fetchUserId(contract, router.query.address);
 
-    getPostsForUser(contract);
+    let subscriptions = ['public', 'gold', 'diamond'];
+    if (router.query.address === account)
+      subscriptions = getSubscriptions(contract, oId, uId);
+
+    console.log(subscriptions);
+
+    for (let i = 0; i < subscriptions.length; i++) {
+      const posts = getPosts(contract, oId, uId, subscriptions[i]);
+      temp.concat(posts);
+    }
+    console.log(temp);
+  }, [router.query.address]);
+
+  useEffect(() => {
+    const uId = +user.id;
+    console.log(uId, router.query.address);
     getLevelsForUser(contract, uId);
-  }, []);
+  }, [router.query.address]);
 
   function closeModal() {
     setIsOpen(false);
@@ -83,6 +106,7 @@ const AccountContainer = ({
           >
             {['Levels', 'Posts'].map((item, index) => (
               <li
+                key={index}
                 className={`flex-1 mx-2 font-medium text-xs leading-tight uppercase  px-6 py-3 my-2 border-2 border-transparent hover:border-blue-800 hover:text-blue-800 focus:border-transparent text-center cursor-pointer rounded-xl ${
                   activeTab === index ? 'text-blue-800 border-blue-800' : ''
                 }`}
@@ -120,9 +144,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getPostsForUser: (contract) => dispatch(getPostsForUser(contract)),
+  getPosts: (contract, ownerId, userId, level) =>
+    dispatch(getPostsForUser(contract, ownerId, userId, level)),
   getLevelsForUser: (contract, ownerId) =>
     dispatch(getLevelsForUser(contract, ownerId)),
+  getSubscriptions: (contract, ownerId, userId) =>
+    dispatch(getSubscriptionsForUser(contract, ownerId, userId)),
+  fetchUserId: (contract, wallet) => dispatch(fetchUserId(contract, wallet)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer);

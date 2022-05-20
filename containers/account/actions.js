@@ -27,3 +27,27 @@ export const getLevelsForUser = (contract, ownerId) => {
     }
   };
 };
+
+export const getSubscriptionsForUser = (contract, ownerId, userId) => {
+  return async () => {
+    try {
+      const subscriptions = [];
+
+      if (await contract.methods.isSubscribed(ownerId, userId, 'public').call())
+        subscriptions.push('public');
+
+      if (await contract.methods.isSubscribed(ownerId, userId, 'gold').call())
+        subscriptions.push('gold');
+
+      if (
+        await contract.methods.isSubscribed(ownerId, userId, 'diamond').call()
+      )
+        subscriptions.push('diamond');
+
+      return subscriptions;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  };
+};

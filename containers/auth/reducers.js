@@ -4,8 +4,6 @@ const initialState = { user: null };
 
 const applicationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_ACTION:
-      return state;
     case SET_USER:
       return {
         ...state,

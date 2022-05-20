@@ -42,7 +42,7 @@ export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
         message: `Level updated. Changes will be reflected soon`,
       });
 
-      setName('');
+      setName('public');
       setTitle('');
       setDescription('');
       setFeatures('');
@@ -106,7 +106,7 @@ export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
 
                 <div className="mt-4 flex justify-around">
                   {['Public', 'Gold', 'Diamond'].map((level) => (
-                    <div>
+                    <div key={level}>
                       <label className="inline-flex items-center">
                         <input
                           type="radio"
