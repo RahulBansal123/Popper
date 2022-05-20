@@ -69,3 +69,48 @@ export async function getPostMetadata(cid: CIDString) {
   const uri = `ipfs://${cid}/${metadata.path}`;
   return { ...metadata, cid, gatewayURL, uri };
 }
+
+export async function storeLevel(
+  name: string,
+  title: string,
+  description: string,
+  owner: string,
+  features: string[]
+) {
+  // The name for our upload includes a prefix we can use to identify our files later
+  const uploadName = ['LEVEL', title].join('|');
+
+  const obj = {
+    name,
+    title,
+    description,
+    owner,
+    features,
+  };
+
+  const metadataFile = new File([JSON.stringify(obj)], 'metadata.json');
+
+  const token = process.env.NEXT_PUBLIC_POPPER_STORAGE;
+
+  const web3storage = new Web3Storage({ token });
+
+  const cid = await web3storage.put([metadataFile], {
+    name: uploadName,
+  });
+
+  return { cid };
+}
+
+export async function getLevelMetadata(cid: CIDString) {
+  const url = `https://${cid}.ipfs.dweb.link/${encodeURIComponent(
+    'metadata.json'
+  )}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(
+      `error fetching post metadata: [${res.status}] ${res.statusText}`
+    );
+  }
+  const metadata = await res.json();
+  return { ...metadata };
+}

@@ -3,7 +3,7 @@ pragma solidity ^0.6.0;
 
 contract Social {
     // Mapping of users to their level's details
-    // Levels can be: 'public', 'gold', 'platinum'
+    // Levels can be: 'public', 'gold', 'diamond'
     mapping(uint => mapping(string => string)) private levelOwnerIds;
 
     // Mapping of owner to levels to users
@@ -20,7 +20,7 @@ contract Social {
     }   
 
     // Get level details of a user
-    function getLevel(uint _ownerId, string memory _level) public levelExists(_ownerId, _level) view returns (  
+    function getLevel(uint _ownerId, string memory _level) public view returns (  
         string memory _ipfsHash
     ) {
         return levelOwnerIds[_ownerId][_level];
@@ -28,6 +28,9 @@ contract Social {
 
     // Create a level
     function addLevel(uint _ownerId, string calldata _level, string calldata _ipfsHash) external returns (bool status){
+        
+        require(keccak256(abi.encodePacked(levelOwnerIds[_ownerId][_level]))==keccak256(abi.encodePacked("")),"Level already exists");
+
         levelOwnerIds[_ownerId][_level] = _ipfsHash;
         emit LevelCreated(_ownerId, _level);
         return true;

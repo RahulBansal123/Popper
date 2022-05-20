@@ -1,31 +1,39 @@
 import Identicon from 'identicon.js';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useRouter } from 'next//router';
+
 import { getCheersForUser } from '../../containers/main/actions';
 import toast from '../../utils/alert';
 
 const AccountProfile = (address) => {
+  const router = useRouter();
   const data = new Identicon(address.address, 200).toString();
   return (
     <img
       width={30}
       height={30}
       src={`data:image/png;base64, ${data}`}
-      className="rounded-full cursor-pointer"
+      className="rounded-full cursor-pointer mx-1"
       onClick={() => {
-        navigator.clipboard.writeText(address.address);
-        toast({ type: 'success', message: 'Copied to clipboard' });
+        router.push({
+          pathname: '/account',
+          query: { address: address.address },
+        });
       }}
     />
   );
 };
 
 const Details = ({
+  myAccount,
   address,
   contract,
   openModal,
   cheers,
   getCheersForUser,
+  showLevelAdd = false,
+  openLevelModal,
 }) => {
   useEffect(() => {
     const fetchCheers = async () => {
@@ -47,7 +55,7 @@ const Details = ({
             className="m-auto rounded-full"
           />
           <p
-            className="mt-2"
+            className="mt-2 cursor-pointer"
             onClick={() => {
               navigator.clipboard.writeText(address);
               toast({ type: 'success', message: 'Copied to clipboard' });
@@ -67,7 +75,7 @@ const Details = ({
             </a>
           </p>
         ) : (
-          <div className="px-5">
+          <div className="px-5 flex">
             {cheers.map((account, index) => (
               <AccountProfile key={index} address={account} />
             ))}
@@ -80,12 +88,23 @@ const Details = ({
         <p className="px-5 font-light">Whoops! No subscriptions found</p>
       </div>
 
-      <div
-        className="border p-3 rounded-xl mt-3 bg-blue-800 text-white cursor-pointer"
-        onClick={openModal}
-      >
-        <p className="text-center">Upload Post</p>
-      </div>
+      {showLevelAdd && myAccount === address && (
+        <div
+          className="border p-3 rounded-xl mt-3 bg-blue-800 text-white cursor-pointer hover:bg-[#004c81e8]"
+          onClick={openLevelModal}
+        >
+          <p className="text-center">Add Level</p>
+        </div>
+      )}
+
+      {myAccount === address && (
+        <div
+          className="border p-3 rounded-xl mt-3 bg-blue-800 text-white hover:bg-[#004c81e8] cursor-pointer"
+          onClick={openModal}
+        >
+          <p className="text-center">Upload Post</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,41 +2,53 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { TextArea } from './TextArea';
 import toast from '../utils/alert';
-import { storePost } from '../utils';
+import { storeLevel } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPostsForUser } from '../containers/main/actions';
+import { getLevelsForUser } from '../containers/account/actions';
 
-export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
+export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [buttonTxt, setButtonTxt] = useState('Upload');
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState(level.name);
+  const [title, setTitle] = useState(level.title);
+  const [description, setDescription] = useState(level.description);
+  const [features, setFeatures] = useState(level.features.join(','));
 
-  const uploadImage = async () => {
+  const uploadLevel = async () => {
     try {
       setButtonTxt('Uploading to IPFS...');
 
-      const res = await storePost(file, title, description, account);
+      const levelFeatures = features.split(',');
+
+      const res = await storeLevel(
+        name,
+        title,
+        description,
+        account,
+        levelFeatures
+      );
 
       setButtonTxt('Storing in smart contract...');
 
       const uId = +user.id;
 
-      console.log(uId, typeof uId, contract, res.cid, account);
-
       await contract.methods
-        .addPost(uId, 'public', res.cid)
+        .updateLevel(uId, name, res.cid)
         .send({ from: account, gasLimit: 6021975 });
 
-      toast({ type: 'success', message: `Post uploaded with CID: ${res.cid}` });
+      toast({
+        type: 'success',
+        message: `Level updated. Changes will be reflected soon`,
+      });
 
-      setFile(null);
+      setName('');
       setTitle('');
       setDescription('');
+      setFeatures('');
       setButtonTxt('Upload');
-      await dispatch(getPostsForUser(contract));
+
+      dispatch(getLevelsForUser(contract, uId));
     } catch (error) {
       console.error(error);
       toast({ type: 'error', message: 'Please try again' });
@@ -89,21 +101,26 @@ export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Upload Image to IPFS
+                  Update Level
                 </Dialog.Title>
-                <div className="mt-2">
-                  <input
-                    onChange={(e) => setFile(e.target.files[0])}
-                    className="my-3"
-                    type="file"
-                  />
-                </div>
 
-                {file && (
-                  <div className="mt-2">
-                    <img src={URL.createObjectURL(file)} alt="preview" />
-                  </div>
-                )}
+                <div className="mt-4 flex justify-around">
+                  {['Public', 'Gold', 'Diamond'].map((level) => (
+                    <div>
+                      <label className="inline-flex items-center">
+                        <input
+                          type="radio"
+                          className="form-radio"
+                          name={level.toLowerCase()}
+                          value={level.toLowerCase()}
+                          checked={name === level.toLowerCase()}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <span className="ml-2 text-base">{level}</span>
+                      </label>
+                    </div>
+                  ))}
+                </div>
 
                 <div className="mt-4">
                   <TextArea
@@ -130,12 +147,24 @@ export const UploadImage = ({ isOpen, closeModal, account, contract }) => {
                 </div>
 
                 <div className="mt-4">
+                  <TextArea
+                    value={features}
+                    onChange={(e) => {
+                      setFeatures(e.target.value);
+                    }}
+                    varient="ongray"
+                    placeholder="Features(comma seperated)"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="mt-4">
                   <button
                     type="button"
                     disabled={buttonTxt !== 'Upload'}
                     className="float-right btn bg-blue-800 text-white hover:bg-[#004c81e6]"
                     onClick={() => {
-                      if (file) uploadImage();
+                      if (name && title && description) uploadLevel();
                     }}
                   >
                     {buttonTxt}

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Identicon from 'identicon.js';
-import toast from '../../utils/alert';
-import { getPostMetadata } from '../../utils';
-
 import web3 from 'web3';
 
+import toast from '../../utils/alert';
+import { getPostMetadata } from '../../utils';
+import { getCheersForUser } from '../../containers/main/actions';
+
 const Post = ({ post, account, contract }) => {
+  const dispatch = useDispatch();
+
   const [isSend, setIsSend] = useState(false);
   const [cheerValue, setCheerValue] = useState('0.0001');
   const [details, setDetails] = useState({
@@ -15,6 +19,8 @@ const Post = ({ post, account, contract }) => {
     cheers: 0,
     gatewayURL: 'https://via.placeholder.com/200',
   });
+
+  const data = new Identicon(details.owner, 200).toString();
 
   useEffect(() => {
     const getMetadata = async () => {
@@ -32,7 +38,7 @@ const Post = ({ post, account, contract }) => {
     const getCheers = async () => {
       let cheers = await contract.methods.getCheeredAmount(post.id).call();
       cheers = web3.utils.fromWei(`${cheers}`, 'ether');
-      setDetails((prev) => ({ ...prev, cheers }));
+      setDetails((prev) => ({ ...prev, cheers: cheers ?? 0 }));
     };
 
     if (post?.hash?.ipfsHash?.length > 0) {
@@ -40,8 +46,6 @@ const Post = ({ post, account, contract }) => {
       getCheers();
     }
   }, [post.hash.ipfsHash]);
-
-  const data = new Identicon(details.owner, 200).toString();
 
   const cheerOwner = async (amount) => {
     try {
@@ -55,6 +59,7 @@ const Post = ({ post, account, contract }) => {
         message: 'Cheered creator',
       });
       setIsSend(false);
+      await dispatch(getCheersForUser(account, contract));
     } catch (error) {
       toast({
         type: 'error',
@@ -100,7 +105,7 @@ const Post = ({ post, account, contract }) => {
           </div>
           {isSend && (
             <input
-              class="appearance-none border border-blue-800 rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="appearance-none border border-blue-800 rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
               placeholder="cheer value(ETH)"
               value={cheerValue}

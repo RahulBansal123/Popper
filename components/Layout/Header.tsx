@@ -1,7 +1,7 @@
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useWeb3React } from '@web3-react/core';
 import Identicon from 'identicon.js';
-import { useRouter } from 'next//router';
-import React, { useEffect } from 'react';
 
 function Header() {
   const router = useRouter();
