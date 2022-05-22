@@ -8,11 +8,9 @@ const LevelCard = ({ main, level, isOwn, account, contract, oId, myId }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const buySubscription = async () => {
-    console.log('buySubscription');
     try {
       const res = await contract.methods.subscribe(oId, myId, level.name).send({
         from: account,
-        value: web3.utils.toWei(`${level.price / 1000}`),
         gasLimit: 6021975,
       });
       console.log(res);
