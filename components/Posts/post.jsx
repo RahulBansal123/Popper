@@ -39,7 +39,7 @@ const Post = ({ post, account, contract }) => {
 
     const getCheers = async () => {
       let cheers = await contract.methods.getCheeredAmount(post.id).call();
-      // cheers = web3.utils.fromWei(`${cheers}`, 'ether');
+      cheers = web3.utils.fromWei(`${cheers}`, 'ether');
       setDetails((prev) => ({ ...prev, cheers: cheers ?? 0 }));
     };
 
@@ -84,7 +84,9 @@ const Post = ({ post, account, contract }) => {
           </h3>
         </div>
         <p className="text-base font-normal text-gray-700 my-2">
-          {details.description}
+          {details.description?.length > 0
+            ? details.description
+            : 'Fetching Details...'}
         </p>
         <div className="flex items-center my-4">
           <div className="flex-1 flex items-center">

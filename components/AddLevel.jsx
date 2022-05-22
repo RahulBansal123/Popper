@@ -22,13 +22,15 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
 
       const levelFeatures = features.split(',');
 
+      const levelPrice = name === 'public' ? 0 : price;
+
       const res = await storeLevel(
         name,
         title,
         description,
         account,
         levelFeatures,
-        price
+        levelPrice
       );
 
       setButtonTxt('Storing in smart contract...');
@@ -148,17 +150,19 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
                   />
                 </div>
 
-                <div className="mt-4">
-                  <TextArea
-                    value={price}
-                    onChange={(e) => {
-                      setPrice(e.target.value);
-                    }}
-                    varient="ongray"
-                    placeholder="Price"
-                    rows={1}
-                  />
-                </div>
+                {name !== 'public' && (
+                  <div className="mt-4">
+                    <TextArea
+                      value={price}
+                      onChange={(e) => {
+                        setPrice(e.target.value);
+                      }}
+                      varient="ongray"
+                      placeholder="Price"
+                      rows={1}
+                    />
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <TextArea

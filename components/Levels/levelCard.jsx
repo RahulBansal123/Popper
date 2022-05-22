@@ -13,7 +13,6 @@ const LevelCard = ({ main, level, isOwn, account, contract, oId, myId }) => {
         from: account,
         gasLimit: 6021975,
       });
-      console.log(res);
       toast({
         type: 'success',
         message: 'Subscribed',

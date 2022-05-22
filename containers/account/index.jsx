@@ -8,7 +8,7 @@ import Header from '../../components/Layout/Header';
 import Details from '../../components/Account/Details';
 import { UploadImage } from '../../components/UploadImage';
 import Levels from '../../components/Levels';
-import { getPostsForUser } from '../../containers/main/actions';
+import { getPostsForUser, setPosts } from '../../containers/main/actions';
 import {
   getLevelsForUser,
   getSubscriptionsForUser,
@@ -29,36 +29,50 @@ const AccountContainer = ({
   getPosts,
   getSubscriptions,
   fetchUserId,
+  setPosts,
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLevelOpen, setIsLevelOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [oId, setOId] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
       const myId = +user.id;
-      const temp = [];
+      let temp = [];
       const uId = await fetchUserId(contract, router.query.address);
       setOId(uId);
 
       let subscriptions = ['public', 'gold', 'diamond'];
-      if (router.query.address !== account)
+      if (router.query.address !== account) {
         subscriptions = await getSubscriptions(contract, uId, myId);
+        if (!subscriptions.includes('public')) {
+          subscriptions.push('public');
+        }
+      }
 
       for (let i = 0; i < subscriptions.length; i++) {
         const posts = await getPosts(contract, uId, myId, subscriptions[i]);
-        temp.concat(posts);
+        temp = [...temp, ...posts];
       }
+      setPosts(temp);
     };
     fetchUserPosts();
   }, [router.query.address]);
 
   useEffect(() => {
     const fetchLevels = async () => {
-      const uId = await fetchUserId(contract, router.query.address);
-      await getLevelsForUser(contract, uId);
+      setLoading(true);
+      try {
+        const uId = await fetchUserId(contract, router.query.address);
+        await getLevelsForUser(contract, uId);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchLevels();
   }, [router.query.address]);
@@ -123,12 +137,18 @@ const AccountContainer = ({
           </ul>
 
           {activeTab === 0 ? (
-            <Levels
-              isOwn={router.query.address === account}
-              contract={contract}
-              account={account}
-              oId={oId}
-            />
+            <>
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                <Levels
+                  isOwn={router.query.address === account}
+                  contract={contract}
+                  account={account}
+                  oId={oId}
+                />
+              )}
+            </>
           ) : (
             <Posts
               posts={posts}
@@ -156,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubscriptions: (contract, ownerId, userId) =>
     dispatch(getSubscriptionsForUser(contract, ownerId, userId)),
   fetchUserId: (contract, wallet) => dispatch(fetchUserId(contract, wallet)),
+  setPosts: (posts) => dispatch(setPosts(posts)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer);

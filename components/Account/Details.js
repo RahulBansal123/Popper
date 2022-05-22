@@ -68,12 +68,7 @@ const Details = ({
           <p className="font-semibold">Cheered Creators</p>
         </div>
         {cheers.length === 0 ? (
-          <p className="px-5 font-light">
-            You are not cheering anyone yet!{' '}
-            <a href="/creators" className="text-blue-500 hover:underline">
-              Find creators
-            </a>
-          </p>
+          <p className="px-5 font-light">You are not cheering anyone yet! </p>
         ) : (
           <div className="px-5 flex">
             {cheers.map((account, index) => (
@@ -81,11 +76,6 @@ const Details = ({
             ))}
           </div>
         )}
-
-        <div className="mt-8 mb-4 border border-r-0 border-l-0 p-2 text-center">
-          <p className="font-semibold">Subscriptions</p>
-        </div>
-        <p className="px-5 font-light">Whoops! No subscriptions found</p>
       </div>
 
       {showLevelAdd && myAccount === address && (

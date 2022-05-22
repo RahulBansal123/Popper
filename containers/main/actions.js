@@ -1,5 +1,12 @@
 import { FETCH_CHEERS, FETCH_POSTS } from './constants';
 
+export const setPosts = (posts) => {
+  return {
+    type: FETCH_POSTS,
+    payload: posts,
+  };
+};
+
 export const getPost = async (id, contract) => {
   try {
     const post = await contract.methods.getPost(id).call();
@@ -14,7 +21,7 @@ export const getPublicPostsForUser = (contract) => {
   return async (dispatch) => {
     try {
       let postIds = [];
-      postIds = await contract.methods.getPublicPosts([1]).call();
+      postIds = await contract.methods.getPublicPosts([2, 3, 4, 5, 6]).call();
 
       postIds = postIds.filter(Number);
 
