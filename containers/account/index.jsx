@@ -34,29 +34,33 @@ const AccountContainer = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLevelOpen, setIsLevelOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [oId, setOId] = useState(0);
 
   useEffect(() => {
-    const oId = +user.id;
-    const temp = [];
-    const uId = fetchUserId(contract, router.query.address);
+    const fetchUserPosts = async () => {
+      const myId = +user.id;
+      const temp = [];
+      const uId = await fetchUserId(contract, router.query.address);
+      setOId(uId);
 
-    let subscriptions = ['public', 'gold', 'diamond'];
-    if (router.query.address === account)
-      subscriptions = getSubscriptions(contract, oId, uId);
+      let subscriptions = ['public', 'gold', 'diamond'];
+      if (router.query.address !== account)
+        subscriptions = await getSubscriptions(contract, uId, myId);
 
-    console.log(subscriptions);
-
-    for (let i = 0; i < subscriptions.length; i++) {
-      const posts = getPosts(contract, oId, uId, subscriptions[i]);
-      temp.concat(posts);
-    }
-    console.log(temp);
+      for (let i = 0; i < subscriptions.length; i++) {
+        const posts = await getPosts(contract, uId, myId, subscriptions[i]);
+        temp.concat(posts);
+      }
+    };
+    fetchUserPosts();
   }, [router.query.address]);
 
   useEffect(() => {
-    const uId = +user.id;
-    console.log(uId, router.query.address);
-    getLevelsForUser(contract, uId);
+    const fetchLevels = async () => {
+      const uId = await fetchUserId(contract, router.query.address);
+      await getLevelsForUser(contract, uId);
+    };
+    fetchLevels();
   }, [router.query.address]);
 
   function closeModal() {
@@ -123,6 +127,7 @@ const AccountContainer = ({
               isOwn={router.query.address === account}
               contract={contract}
               account={account}
+              oId={oId}
             />
           ) : (
             <Posts

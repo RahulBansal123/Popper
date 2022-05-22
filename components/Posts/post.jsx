@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Identicon from 'identicon.js';
-import web3 from 'web3';
 
 import toast from '../../utils/alert';
 import { getPostMetadata } from '../../utils';
 import { getCheersForUser } from '../../containers/main/actions';
+import { useRouter } from 'next/router';
 
 const Post = ({ post, account, contract }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [isSend, setIsSend] = useState(false);
@@ -17,7 +18,7 @@ const Post = ({ post, account, contract }) => {
     title: '',
     description: '',
     cheers: 0,
-    gatewayURL: 'https://via.placeholder.com/200',
+    gatewayURL: '/assets/images/placeholder.jpeg',
   });
 
   const data = new Identicon(details.owner, 200).toString();
@@ -25,6 +26,7 @@ const Post = ({ post, account, contract }) => {
   useEffect(() => {
     const getMetadata = async () => {
       const res = await getPostMetadata(post.hash.ipfsHash);
+      if (!res) return;
       const { owner, title, description, gatewayURL } = res;
 
       setDetails({
@@ -37,7 +39,7 @@ const Post = ({ post, account, contract }) => {
 
     const getCheers = async () => {
       let cheers = await contract.methods.getCheeredAmount(post.id).call();
-      cheers = web3.utils.fromWei(`${cheers}`, 'ether');
+      // cheers = web3.utils.fromWei(`${cheers}`, 'ether');
       setDetails((prev) => ({ ...prev, cheers: cheers ?? 0 }));
     };
 
@@ -51,7 +53,7 @@ const Post = ({ post, account, contract }) => {
     try {
       await contract.methods.cheerCreator(post.id).send({
         from: account,
-        value: web3.utils.toWei(amount),
+        value: amount,
         gasLimit: 100000,
       });
       toast({
@@ -78,7 +80,7 @@ const Post = ({ post, account, contract }) => {
         <div className="flex items-center justify-between">
           <h3 className="text-lg mt-2 font-semibold">{details.title}</h3>
           <h3 className="text-lg mt-2 font-semibold text-gray-500">
-            {details.cheers} ETH
+            {details.cheers} MATIC
           </h3>
         </div>
         <p className="text-base font-normal text-gray-700 my-2">
@@ -92,10 +94,9 @@ const Post = ({ post, account, contract }) => {
             />
             <p
               onClick={() => {
-                navigator.clipboard.writeText(owner);
-                toast({
-                  type: 'success',
-                  message: 'Copied to clipboard',
+                router.push({
+                  pathname: '/account',
+                  query: { address: details.owner },
                 });
               }}
               className="cursor-pointer text-gray-800 leading-none text-base font-medium hover:text-black"
@@ -107,7 +108,7 @@ const Post = ({ post, account, contract }) => {
             <input
               className="appearance-none border border-blue-800 rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
-              placeholder="cheer value(ETH)"
+              placeholder="cheer value(MATIC)"
               value={cheerValue}
               onChange={(e) => setCheerValue(e.target.value)}
             />
@@ -115,7 +116,13 @@ const Post = ({ post, account, contract }) => {
 
           <button
             className="btn !rounded-full bg-blue-800 text-white hover:bg-[#004c81e6]"
-            onClick={() => (isSend ? cheerOwner(cheerValue) : setIsSend(true))}
+            onClick={() => {
+              if (isSend) {
+                cheerOwner(cheerValue);
+              } else {
+                setIsSend(true);
+              }
+            }}
           >
             {isSend ? 'Send' : 'Cheer'}
           </button>

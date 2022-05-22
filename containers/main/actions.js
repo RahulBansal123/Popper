@@ -6,6 +6,7 @@ export const getPost = async (id, contract) => {
     return post;
   } catch (error) {
     console.error(error);
+    return null;
   }
 };
 

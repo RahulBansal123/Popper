@@ -19,7 +19,7 @@ export const getLevelsForUser = (contract, ownerId) => {
       let temp = [];
       for (let i = 0; i < levelHashes.length; i++) {
         const levelDetails = await getLevelMetadata(levelHashes[i]);
-        temp = [...temp, { ...levelDetails }];
+        if (levelDetails) temp = [...temp, { ...levelDetails }];
       }
       dispatch({ type: FETCH_LEVELS, payload: temp });
     } catch (err) {

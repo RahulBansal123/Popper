@@ -24,7 +24,7 @@ const Auth = () => {
   };
 
   const config = {
-    supportedChainIds: [1, 56, 137, 80001], // 1 - ethereum mainnet, 56 - binance smart chain, 137 - polygon mainnet, 80001 - polygon testnet
+    supportedChainIds: [80001], // 1 - ethereum mainnet, 56 - binance smart chain, 137 - polygon mainnet, 80001 - polygon testnet
     connectors: {
       walletconnect: {
         qrcode: true,

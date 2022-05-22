@@ -60,9 +60,10 @@ export async function getPostMetadata(cid: CIDString) {
   )}`;
   const res = await fetch(url);
   if (!res.ok) {
-    throw new Error(
+    console.error(
       `error fetching post metadata: [${res.status}] ${res.statusText}`
     );
+    return null;
   }
   const metadata = await res.json();
   const gatewayURL = `https://${cid}.ipfs.dweb.link/${encodeURIComponent(
@@ -77,7 +78,8 @@ export async function storeLevel(
   title: string,
   description: string,
   owner: string,
-  features: string[]
+  features: string[],
+  price: number
 ) {
   // The name for our upload includes a prefix we can use to identify our files later
   const uploadName = ['LEVEL', title].join('|');
@@ -88,6 +90,7 @@ export async function storeLevel(
     description,
     owner,
     features,
+    price,
   };
 
   const metadataFile = new File([JSON.stringify(obj)], 'metadata.json');
@@ -109,9 +112,10 @@ export async function getLevelMetadata(cid: CIDString) {
   )}`;
   const res = await fetch(url);
   if (!res.ok) {
-    throw new Error(
-      `error fetching post metadata: [${res.status}] ${res.statusText}`
+    console.error(
+      `error fetching level metadata: [${res.status}] ${res.statusText}`
     );
+    return null;
   }
   const metadata = await res.json();
   return { ...metadata };

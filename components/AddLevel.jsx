@@ -14,6 +14,7 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [features, setFeatures] = useState('');
+  const [price, setPrice] = useState(0);
 
   const uploadLevel = async () => {
     try {
@@ -26,7 +27,8 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
         title,
         description,
         account,
-        levelFeatures
+        levelFeatures,
+        price
       );
 
       setButtonTxt('Storing in smart contract...');
@@ -37,7 +39,10 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
         .addLevel(uId, name, res.cid)
         .send({ from: account, gasLimit: 6021975 });
 
-      toast({ type: 'success', message: `Level added` });
+      toast({
+        type: 'success',
+        message: `Level added. Changes will be reflected soon`,
+      });
 
       setName('public');
       setTitle('');
@@ -140,6 +145,18 @@ export const AddLevel = ({ isOpen, closeModal, account, contract }) => {
                     varient="ongray"
                     placeholder="Description"
                     rows={2}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <TextArea
+                    value={price}
+                    onChange={(e) => {
+                      setPrice(e.target.value);
+                    }}
+                    varient="ongray"
+                    placeholder="Price"
+                    rows={1}
                   />
                 </div>
 

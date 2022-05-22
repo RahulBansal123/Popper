@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LevelCard from './levelCard';
 
-const Levels = ({ isOwn, levels, account, contract }) => {
+const Levels = ({ isOwn, levels, account, contract, oId, user }) => {
   if (levels.length === 0)
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -16,6 +16,8 @@ const Levels = ({ isOwn, levels, account, contract }) => {
           isOwn={isOwn}
           contract={contract}
           account={account}
+          oId={oId}
+          myId={+user.id}
         />
       ))}
     </div>
@@ -24,6 +26,7 @@ const Levels = ({ isOwn, levels, account, contract }) => {
 
 const mapStateToProps = (state) => ({
   levels: state.account.levels,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(Levels);

@@ -1,9 +1,33 @@
 import { useState } from 'react';
 import CornerRibbon from 'react-corner-ribbon';
+import web3 from 'web3';
 import { EditLevel } from '../EditLevel';
+import toast from '../../utils/alert';
 
-const LevelCard = ({ main, level, isOwn, account, contract }) => {
+const LevelCard = ({ main, level, isOwn, account, contract, oId, myId }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const buySubscription = async () => {
+    console.log('buySubscription');
+    try {
+      const res = await contract.methods.subscribe(oId, myId, level.name).send({
+        from: account,
+        value: web3.utils.toWei(`${level.price / 1000}`),
+        gasLimit: 6021975,
+      });
+      console.log(res);
+      toast({
+        type: 'success',
+        message: 'Subscribed',
+      });
+    } catch (err) {
+      toast({
+        type: 'error',
+        message: err.message,
+      });
+    }
+  };
+
   return (
     <div className="flex col-span-1 mx-auto">
       <EditLevel
@@ -34,7 +58,7 @@ const LevelCard = ({ main, level, isOwn, account, contract }) => {
           </p>
         </div>
         <div className="px-6 flex-1">
-          {level.features.map((item) => (
+          {level.features?.map((item) => (
             <div className="flex items-center my-2" key={item}>
               <img
                 src="/assets/images/popper.png"
@@ -59,7 +83,10 @@ const LevelCard = ({ main, level, isOwn, account, contract }) => {
                 ? 'bg-white text-blue-800 hover:text-[#004c81e6]'
                 : 'bg-blue-800 text-white hover:bg-[#004c81e6]'
             } !px-5 !rounded-3xl shadow-md`}
-            onClick={() => (isOwn ? setIsOpen(true) : null)}
+            onClick={() => {
+              if (isOwn) setIsOpen(true);
+              else buySubscription();
+            }}
           >
             {isOwn ? 'Edit' : 'Buy'}
           </button>

@@ -14,6 +14,7 @@ export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
   const [title, setTitle] = useState(level.title);
   const [description, setDescription] = useState(level.description);
   const [features, setFeatures] = useState(level.features.join(','));
+  const [price, setPrice] = useState(level.price);
 
   const uploadLevel = async () => {
     try {
@@ -26,7 +27,8 @@ export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
         title,
         description,
         account,
-        levelFeatures
+        levelFeatures,
+        price
       );
 
       setButtonTxt('Storing in smart contract...');
@@ -143,6 +145,18 @@ export const EditLevel = ({ isOpen, closeModal, account, contract, level }) => {
                     varient="ongray"
                     placeholder="Description"
                     rows={2}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <TextArea
+                    value={price}
+                    onChange={(e) => {
+                      setPrice(e.target.value);
+                    }}
+                    varient="ongray"
+                    placeholder="Price"
+                    rows={1}
                   />
                 </div>
 
