@@ -26,7 +26,7 @@ const LevelCard = ({ main, level, isOwn, account, contract, oId, myId }) => {
   };
 
   return (
-    <div className="flex col-span-1 mx-auto">
+    <div className="flex mx-auto my-5 md:my-0">
       <EditLevel
         isOpen={isOpen}
         closeModal={() => setIsOpen(false)}

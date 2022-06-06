@@ -8,7 +8,10 @@ import toast from '../../utils/alert';
 
 const AccountProfile = (address) => {
   const router = useRouter();
-  const data = new Identicon(address.address, 200).toString();
+  const data = new Identicon(
+    address.address || '0x0000000000000000',
+    200
+  ).toString();
   return (
     <img
       width={30}
@@ -37,15 +40,15 @@ const Details = ({
 }) => {
   useEffect(() => {
     const fetchCheers = async () => {
-      await getCheersForUser(address, contract);
+      if (contract) await getCheersForUser(address, contract);
     };
     fetchCheers();
-  }, [address]);
+  }, [address, contract]);
 
-  const data = new Identicon(address, 200).toString();
+  const data = new Identicon(address || '0x0000000000000000', 200).toString();
 
   return (
-    <div className="w-1/4">
+    <div className="w-10/12 md:w-1/4 mx-auto mb-10 md:my-0">
       <div className="border py-8 rounded-xl">
         <div className="w-full text-center px-5">
           <img
@@ -61,7 +64,7 @@ const Details = ({
               toast({ type: 'success', message: 'Copied to clipboard' });
             }}
           >
-            {address.slice(0, 12)}...
+            {address?.slice(0, 12)}...
           </p>
         </div>
         <div className="mt-8 mb-4 border border-r-0 border-l-0 p-2 text-center">

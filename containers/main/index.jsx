@@ -16,8 +16,8 @@ const Home = ({ posts, account, contract, getPublicPostsForUser }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    getPublicPostsForUser(contract);
-  }, []);
+    if (contract) getPublicPostsForUser(contract);
+  }, [contract]);
 
   function closeModal() {
     setIsOpen(false);
@@ -34,7 +34,7 @@ const Home = ({ posts, account, contract, getPublicPostsForUser }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="container py-4 flex">
+      <div className="container py-4 flex flex-col md:flex-row">
         <UploadImage
           isOpen={isOpen}
           closeModal={closeModal}

@@ -9,7 +9,7 @@ const Levels = ({ isOwn, levels, account, contract, oId, user }) => {
       </div>
     );
   return (
-    <div className={`w-full flex`}>
+    <div className={`w-full flex flex-col md:flex-row`}>
       {levels.map((level) => (
         <LevelCard
           level={level}

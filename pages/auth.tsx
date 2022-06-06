@@ -5,10 +5,11 @@ import Account from '../containers/auth';
 
 const Auth = () => {
   const { account } = useWeb3React();
-  const Router = useRouter();
+  const router = useRouter();
 
   if (account) {
-    Router.replace('/');
+    console.log('account', account);
+    router.replace('/');
     return null;
   }
 

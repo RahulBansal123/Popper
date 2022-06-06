@@ -59,8 +59,8 @@ const AccountContainer = ({
       }
       setPosts(temp);
     };
-    fetchUserPosts();
-  }, [router.query.address]);
+    if (user.id) fetchUserPosts();
+  }, [router.query.address, user]);
 
   useEffect(() => {
     const fetchLevels = async () => {
@@ -92,7 +92,7 @@ const AccountContainer = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="container py-4 flex">
+      <div className="container py-4 flex flex-col md:flex-row">
         {router.query.address === account && (
           <>
             <UploadImage
@@ -117,9 +117,9 @@ const AccountContainer = ({
           contract={contract}
           showLevelAdd={true}
         />
-        <div className="ml-3 w-full">
+        <div className="mx-auto md:ml-3 w-10/12 md:w-full">
           <ul
-            className="flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4 w-1/2 mx-auto"
+            className="flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-10 md:mb-4 w-1/2 mx-auto"
             role="tablist"
           >
             {['Levels', 'Posts'].map((item, index) => (
@@ -154,7 +154,7 @@ const AccountContainer = ({
               posts={posts}
               contract={contract}
               account={account}
-              className="!w-3/5"
+              className="!w-full md:!w-3/5"
             />
           )}
         </div>

@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { connect, useDispatch } from 'react-redux';
 
-import UserContract from '../../abis/User.json';
 import Web3Container from '../../lib/Web3Container';
 import { setUser } from './actions';
 
@@ -15,20 +14,13 @@ const Wrapper = ({ children, user, account, contract }) => {
       if (account && account !== '0x0' && !user) {
         let fetchedUser;
 
-        if (contract) {
-          try {
-            fetchedUser = await contract.methods.getUser(account).call();
-          } catch (error) {
-            console.error(error);
-          }
+        try {
+          fetchedUser = await contract.methods.getUser(account).call();
+        } catch (error) {
+          console.error('Error occured while fetching user', error);
         }
 
-        if (
-          fetchedUser &&
-          fetchedUser.id !== 0 &&
-          fetchedUser.name &&
-          contract
-        ) {
+        if (fetchedUser && fetchedUser.id !== 0) {
           dispatch(setUser(fetchedUser));
         } else {
           try {
@@ -36,7 +28,7 @@ const Wrapper = ({ children, user, account, contract }) => {
               .createUser('John Doe')
               .send({ from: account, gasLimit: 100000 });
           } catch (error) {
-            console.error(error);
+            console.error('Error occured while creating user', error);
           }
         }
       }
@@ -50,10 +42,12 @@ const Wrapper = ({ children, user, account, contract }) => {
 function Web3Wrapper({ user, children }) {
   return (
     <Web3Container
-      contractDefinition={UserContract}
       render={({ account, contract }) => (
         <Wrapper account={account} contract={contract} user={user}>
-          {children}
+          {React.cloneElement(children, {
+            account,
+            contract,
+          })}
         </Wrapper>
       )}
     />

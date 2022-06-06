@@ -1,15 +1,11 @@
+import { useRouter } from 'next/router';
 import Main from '../containers/main';
 
-import Web3Container from '../lib/Web3Container';
-import withAuth from '../components/withAuth';
-
-function Home() {
-  return (
-    <Web3Container
-      render={({ account, contract }) => (
-        <Main account={account} contract={contract} />
-      )}
-    />
-  );
+function Home(props) {
+  const router = useRouter();
+  if (!props.account) {
+    router.push('/auth');
+  }
+  return <Main account={props.account} contract={props.contract} />;
 }
-export default withAuth(Home);
+export default Home;

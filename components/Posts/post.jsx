@@ -6,6 +6,7 @@ import toast from '../../utils/alert';
 import { getPostMetadata } from '../../utils';
 import { getCheersForUser } from '../../containers/main/actions';
 import { useRouter } from 'next/router';
+import web3 from 'web3';
 
 const Post = ({ post, account, contract }) => {
   const router = useRouter();
@@ -21,7 +22,10 @@ const Post = ({ post, account, contract }) => {
     gatewayURL: '/assets/images/placeholder.jpeg',
   });
 
-  const data = new Identicon(details.owner, 200).toString();
+  const data = new Identicon(
+    details.owner || '0x0000000000000000',
+    200
+  ).toString();
 
   useEffect(() => {
     const getMetadata = async () => {
@@ -38,7 +42,7 @@ const Post = ({ post, account, contract }) => {
     };
 
     const getCheers = async () => {
-      let cheers = await contract.methods.getCheeredAmount(post.id).call();
+      let cheers = await contract?.methods.getCheeredAmount(post.id).call();
       cheers = web3.utils.fromWei(`${cheers}`, 'ether');
       setDetails((prev) => ({ ...prev, cheers: cheers ?? 0 }));
     };
@@ -47,7 +51,7 @@ const Post = ({ post, account, contract }) => {
       getMetadata();
       getCheers();
     }
-  }, [post.hash.ipfsHash]);
+  }, [post.hash.ipfsHash, contract]);
 
   const cheerOwner = async (amount) => {
     try {
@@ -61,7 +65,7 @@ const Post = ({ post, account, contract }) => {
         message: 'Cheered creator',
       });
       setIsSend(false);
-      await dispatch(getCheersForUser(account, contract));
+      dispatch(getCheersForUser(account, contract));
     } catch (error) {
       toast({
         type: 'error',
@@ -103,7 +107,7 @@ const Post = ({ post, account, contract }) => {
               }}
               className="cursor-pointer text-gray-800 leading-none text-base font-medium hover:text-black"
             >
-              {details.owner.slice(0, 20)}...
+              {details.owner?.slice(0, 20)}...
             </p>
           </div>
           {isSend && (

@@ -7,16 +7,20 @@ function Header() {
   const router = useRouter();
   const { account } = useWeb3React();
   const [data, setData] = React.useState();
+
   useEffect(() => {
-    if (account !== '0x0') {
-      setData(new Identicon(account, 200).toString());
+    if (account && account !== '0x0') {
+      setData(new Identicon(account || '0x0000000000000000', 200).toString());
     }
   }, [account]);
   return (
-    <div className="container items-center">
-      <div className="flex flex-col md:flex-row items-center md:justify-between border py-3 px-5 rounded-xl">
+    <div className="container items-center w-11/12 md:w-full">
+      <div className="mx-auto flex flex-col md:flex-row items-center md:justify-between border py-3 px-5 rounded-xl">
         <div className="flex flex-row space-x-2 items-center">
-          <a href="/" className="font-mono text-xl font-bold text-blue-800">
+          <a
+            href="/"
+            className="font-mono text-xl font-bold text-blue-800 cursor-pointer"
+          >
             Popper
           </a>
         </div>
@@ -27,7 +31,7 @@ function Header() {
           }
         >
           <span className="font-mono overflow-ellipsis overflow-hidden">
-            {account.slice(0, 12)}...
+            {account?.slice(0, 12)}...
           </span>
           {account && data && (
             <img
